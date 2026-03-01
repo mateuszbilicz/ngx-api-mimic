@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-api-mock": {
+    "ngx-api-mimic": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -24,9 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ]
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -56,10 +54,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ngx-api-mock:build:production"
+              "buildTarget": "ngx-api-mimic:build:production"
             },
             "development": {
-              "buildTarget": "ngx-api-mock:build:development"
+              "buildTarget": "ngx-api-mimic:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -68,6 +66,15 @@
           "builder": "@angular/build:unit-test"
         }
       }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component",
+      "changeDetection": "OnPush"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
     }
   }
 }

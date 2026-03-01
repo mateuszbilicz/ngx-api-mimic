@@ -1,59 +1,26 @@
-# NgxApiMock
+# ngx-api-mimic
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
-## Development server
+## WARNING!
 
-To start a local development server, run:
+This repo is still in work progress.
+I'm creating Angular library for mocking APIs - something I'm usually using in recruiting tasks or private projects.
+If you're interested in such library, watch this repo.
+Also, if you're recruiter or team member who wants to check my portfolio, then this project might interest you - I'll develop this library on public repo from the beginning.
 
-```bash
-ng serve
-```
+## TODO
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- [ ] Create library
+- [ ] Import api-mock interceptor and controller logic
+- [ ] Import data mock
+- [ ] Check api-mock for any possible upgrades
+- [ ] Check data mock for any possible upgrades
+- [ ] Write tests
+- [ ] Write app with example usages
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## License
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Currently this project is under Creative Commons Attribution-NonCommercial-NoDerivs (CC BY-NC-ND 4.0) license.
+I'm locking ngx-api-mimic package name.
