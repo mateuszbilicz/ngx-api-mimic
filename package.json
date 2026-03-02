@@ -1,19 +1,37 @@
 {
   "name": "ngx-api-mimic",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": {
     "name": "Mateusz Bilicz",
     "url": "https://mateuszbilicz.pl/"
+  },
+  "keywords": [
+    "Angular",
+    "API Mock",
+    "Mock Service",
+    "Data Mock",
+    "Angular Mocks",
+    "Mock interceptor",
+    "Mock API Controllers"
+  ],
+  "exports": {
+    "default": [
+      "projects/ngx-api-mimic/src/public-api.ts"
+    ]
   },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-ngx-api-mimic": "ng build ngx-api-mimic",
+    "update-ngx-api-mimic": "ng build ngx-api-mimic; npm pack ./dist/ngx-api-mimic; npm install ./ngx-api-mimic-0.0.1.tgz",
+    "test-ngx-api-mimic": "ng test ngx-api-mimic",
+    "publish": "ng build ngx-api-mimic; cd dist/ngx-api-mimic; npm publish"
   },
   "license": "UNLICENSED",
-  "private": true,
+  "private": false,
   "packageManager": "npm@11.6.2",
   "dependencies": {
     "@angular/common": "^21.2.0",
@@ -31,6 +49,7 @@
     "@angular/compiler-cli": "^21.2.0",
     "@tailwindcss/postcss": "^4.1.12",
     "jsdom": "^28.0.0",
+    "ng-packagr": "^21.2.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.1.12",

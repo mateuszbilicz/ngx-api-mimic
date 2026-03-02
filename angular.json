@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ngx-api-mimic": {
+    "angular-api-mimic": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -54,16 +54,42 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ngx-api-mimic:build:production"
+              "buildTarget": "angular-api-mimic:build:production"
             },
             "development": {
-              "buildTarget": "ngx-api-mimic:build:development"
+              "buildTarget": "angular-api-mimic:build:development"
             }
           },
           "defaultConfiguration": "development"
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        }
+      }
+    },
+    "ngx-api-mimic": {
+      "projectType": "library",
+      "root": "projects/ngx-api-mimic",
+      "sourceRoot": "projects/ngx-api-mimic/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-api-mimic/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-api-mimic/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/ngx-api-mimic/tsconfig.spec.json"
+          }
         }
       }
     }

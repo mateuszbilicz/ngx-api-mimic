@@ -11,16 +11,28 @@ Also, if you're recruiter or team member who wants to check my portfolio, then t
 
 ## TODO
 
-- [ ] Create library
-- [ ] Import api-mock interceptor and controller logic
-- [ ] Import data mock
-- [ ] Check api-mock for any possible upgrades
-- [ ] Check data mock for any possible upgrades
+- [X] Create library
+- [X] Import api-mock interceptor and controller logic
+- [X] Import data mock
+- [X] Check api-mock for any possible upgrades
+- [X] Check data mock for any possible upgrades
+- [ ] Improve typing in data mocks
+- [ ] Improve typing in router
+- [ ] Create api mimic router factory
 - [ ] Write tests
 - [ ] Write app with example usages
 
 
 ## License
 
-Currently this project is under Creative Commons Attribution-NonCommercial-NoDerivs (CC BY-NC-ND 4.0) license.
-I'm locking ngx-api-mimic package name.
+**ISC**
+
+For more details look into LICENSE file.
+
+## Credits & Data Sources
+
+This library uses datasets from the following projects:
+- [@ruanbekker](https://gist.github.com/ruanbekker) [array-names.py](https://gist.github.com/ruanbekker/a1506f06aa1df06c5a9501cb393626ea)
+- [@subodhghulaxe](https://gist.github.com/subodhghulaxe) [last_names.php](https://gist.github.com/subodhghulaxe/8148971)
+
+A big thank you to the maintainers for such amazing and large datasets!
