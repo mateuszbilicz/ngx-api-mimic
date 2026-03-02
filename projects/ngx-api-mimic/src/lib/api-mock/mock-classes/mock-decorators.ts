@@ -1,14 +1,4 @@
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
-
-type RegexCheckResult = {
-  pathRegex: RegExp;
-  urlParams: string[];
-}
-
-export interface NgxApiMimicEndpoint extends RegexCheckResult {
-  method: HttpMethod;
-  handler: Function;
-}
+import { NgxApiMimicEndpoint, RegexCheckResult } from '../../api/api-mock';
 
 function resolvePathRegex(path: string): RegexCheckResult {
   let resolvedPath = path.split('/');
@@ -31,6 +21,7 @@ function resolvePathRegex(path: string): RegexCheckResult {
   }
 }
 
+/** HTTP GET method endpoint */
 export function Get(path: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     target[propertyKey]['endpoint'] = {
@@ -41,6 +32,7 @@ export function Get(path: string) {
   }
 }
 
+/** HTTP POST method endpoint */
 export function Post(path: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     target[propertyKey]['endpoint'] = {
@@ -51,6 +43,7 @@ export function Post(path: string) {
   }
 }
 
+/** HTTP PUT method endpoint */
 export function Put(path: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     target[propertyKey]['endpoint'] = {
@@ -61,6 +54,7 @@ export function Put(path: string) {
   }
 }
 
+/** HTTP DELETE method endpoint */
 export function Delete(path: string) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     target[propertyKey]['endpoint'] = {
@@ -90,6 +84,7 @@ function getAllFuncs(toCheck: any) {
     });
 }
 
+/** Controller - contains set of methods */
 export function Controller(basePath: string) {
   return (target: any) => {
     target.prototype['basePath'] = basePath;

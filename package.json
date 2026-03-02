@@ -1,6 +1,6 @@
 {
   "name": "ngx-api-mimic",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "Mateusz Bilicz",
     "url": "https://mateuszbilicz.pl/"
@@ -26,7 +26,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-ngx-api-mimic": "ng build ngx-api-mimic",
-    "update-ngx-api-mimic": "ng build ngx-api-mimic; npm pack ./dist/ngx-api-mimic; npm install ./ngx-api-mimic-0.0.2.tgz",
+    "update-ngx-api-mimic": "ng build ngx-api-mimic; npm pack ./dist/ngx-api-mimic; npm install ./ngx-api-mimic-0.0.3.tgz",
     "test-ngx-api-mimic": "ng test ngx-api-mimic",
     "publish": "ng build ngx-api-mimic; cd dist/ngx-api-mimic; npm publish"
   },

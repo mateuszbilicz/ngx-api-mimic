@@ -2,6 +2,7 @@ import {HttpInterceptorFn, HttpResponse} from '@angular/common/http';
 import {of, switchMap, timer} from 'rxjs';
 import { NgxApiMimicRouter } from './mock-classes/api-mock-router';
 
+/** Creates ngxApiMockInterceptor that handles all HTTP requests */
 export const ngxApiMockInterceptorFactory = (
   router: NgxApiMimicRouter,
   minResponseTime = 100,

@@ -1,15 +1,12 @@
-import { NgxApiMimicEndpoint, HttpMethod } from './mock-decorators';
 import {HttpHeaders} from "@angular/common/http";
+import {
+  HttpMethod,
+  NgxApiMimicEndpoint,
+  NgxApiMimicMethodLookupResult,
+  NgxApiMimicQueryParamMap,
+} from '../../api/api-mock';
 
-export type NgxApiMimicQueryParamMap = Map<string, string | string[]>;
-
-type MethodLookupResult = {
-  endpoint: NgxApiMimicEndpoint;
-  relativePath: `/${string}`;
-  urlParams: (string | undefined)[];
-  queryParamMap: NgxApiMimicQueryParamMap;
-};
-
+/** API Mimic router - routes requests between controllers and their methods */
 export class NgxApiMimicRouter {
   private classes: Map<string, NgxApiMimicEndpoint[]> = new Map();
 
@@ -24,7 +21,7 @@ export class NgxApiMimicRouter {
     classes.forEach((cls) => this.add(cls));
   }
 
-  getMethod(method: HttpMethod, path: string): MethodLookupResult | undefined {
+  getMethod(method: HttpMethod, path: string): NgxApiMimicMethodLookupResult | undefined {
     if (path.startsWith('/')) path = path.slice(1);
     const [pathPart, queryParamsPart] = path.split('?');
     let [base, ...rest] = pathPart.split('/');
@@ -59,7 +56,7 @@ export class NgxApiMimicRouter {
       relativePath,
       urlParams,
       queryParamMap,
-    } as MethodLookupResult;
+    } as NgxApiMimicMethodLookupResult;
   }
 
   execMethod(method: HttpMethod, path: string, body: any, headers: HttpHeaders) {
@@ -67,4 +64,11 @@ export class NgxApiMimicRouter {
     if (!fn) return undefined;
     return fn.endpoint.handler(...fn.urlParams, ...(body ? [body] : []), fn.queryParamMap, headers);
   }
+}
+
+/** Creates NGX Api Mimic Router with list of Controller classes */
+export const ngxApiMimicRouterFactory = (classes: any[]) => {
+  const router = new NgxApiMimicRouter();
+  router.initialize(classes);
+  return router;
 }
