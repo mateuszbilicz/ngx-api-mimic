@@ -1,64 +1,38 @@
-# NgxApiMimic
+# ngx-api-mimic
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
-## Code scaffolding
+## WARNING!
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+This repo is still in work progress.
+I'm creating Angular library for mocking APIs - something I'm usually using in recruiting tasks or private projects.
+If you're interested in such library, watch this repo.
+Also, if you're recruiter or team member who wants to check my portfolio, then this project might interest you - I'll develop this library on public repo from the beginning.
 
-```bash
-ng generate component component-name
-```
+## TODO
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- [X] Create library
+- [X] Import api-mock interceptor and controller logic
+- [X] Import data mock
+- [X] Check api-mock for any possible upgrades
+- [X] Check data mock for any possible upgrades
+- [ ] Improve typing in data mocks
+- [ ] Improve typing in router
+- [ ] Create api mimic router factory
+- [ ] Write tests
+- [ ] Write app with example usages
 
-```bash
-ng generate --help
-```
 
-## Building
+## License
 
-To build the library, run:
+**ISC**
 
-```bash
-ng build ngx-api-mimic
-```
+For more details look into LICENSE file.
 
-This command will compile your project, and the build artifacts will be placed in the `dist/` directory.
+## Credits & Data Sources
 
-### Publishing the Library
+This library uses datasets from the following projects:
+- [@ruanbekker](https://gist.github.com/ruanbekker) [array-names.py](https://gist.github.com/ruanbekker/a1506f06aa1df06c5a9501cb393626ea)
+- [@subodhghulaxe](https://gist.github.com/subodhghulaxe) [last_names.php](https://gist.github.com/subodhghulaxe/8148971)
 
-Once the project is built, you can publish your library by following these steps:
-
-1. Navigate to the `dist` directory:
-
-   ```bash
-   cd dist/ngx-api-mimic
-   ```
-
-2. Run the `npm publish` command to publish your library to the npm registry:
-   ```bash
-   npm publish
-   ```
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+A big thank you to the maintainers for such amazing and large datasets!
