@@ -1,6 +1,7 @@
 import { NgxApiMimicMockSchema } from './mock-schema';
 import { MockSchemaOf } from '../api/data-mock';
 
+/** Class for data mock services */
 export class NgxApiMimicMockData<T> extends NgxApiMimicMockSchema<T> {
   private name: string = 'blank';
   private preventStore: boolean = true;
