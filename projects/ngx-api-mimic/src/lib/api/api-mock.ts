@@ -23,3 +23,5 @@ export interface NgxApiMimicEndpoint extends RegexCheckResult {
   method: HttpMethod;
   handler: Function;
 }
+
+export type Class<T = any> = new (...args: any[]) => T;

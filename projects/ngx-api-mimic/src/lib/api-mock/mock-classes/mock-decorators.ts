@@ -1,11 +1,22 @@
-import { NgxApiMimicEndpoint, RegexCheckResult } from '../../api/api-mock';
+import { HttpMethod, NgxApiMimicEndpoint, RegexCheckResult } from '../../api/api-mock';
 
+/** Helper type for creating function decorators */
+type DecoratedHandler = Function & { endpoint?: NgxApiMimicEndpoint };
+
+/** Controller prototype with metadata */
+interface ControllerPrototype {
+  basePath: string;
+  endpoints: NgxApiMimicEndpoint[];
+  _mapEndpoints: (instance: object) => void;
+  [key: string]: any;
+}
+
+/** Resolve path regex inside method decorator */
 function resolvePathRegex(path: string): RegexCheckResult {
   let resolvedPath = path.split('/');
-  if (resolvedPath[0] === '/')
-    resolvedPath.splice(0, 1);
+  if (resolvedPath[0] === '/') resolvedPath.splice(0, 1);
   let urlParams: string[] = [];
-  resolvedPath = resolvedPath.map(part => {
+  resolvedPath = resolvedPath.map((part) => {
     const isParam = part.startsWith(':');
     if (isParam) {
       urlParams.push(part.slice(1));
@@ -13,90 +24,74 @@ function resolvePathRegex(path: string): RegexCheckResult {
     } else return part;
   });
   return {
-    pathRegex: new RegExp(
-      `^${resolvedPath.join('\/')}$`,
-      'm'
-    ),
-    urlParams
-  }
+    pathRegex: new RegExp(`^${resolvedPath.join('\/')}$`, 'm'),
+    urlParams,
+  };
+}
+
+/** Creates decorator function */
+function createEndpointDecorator(method: HttpMethod, path: string): MethodDecorator {
+  return (
+    target: object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<any>,
+  ) => {
+    const handler = descriptor.value as DecoratedHandler;
+
+    if (handler && typeof handler === 'function') {
+      handler.endpoint = {
+        method,
+        ...resolvePathRegex(path),
+        handler: handler,
+      };
+    }
+  };
 }
 
 /** HTTP GET method endpoint */
-export function Get(path: string) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    target[propertyKey]['endpoint'] = {
-      method: 'GET',
-      ...resolvePathRegex(path),
-      handler: target[propertyKey]
-    } as NgxApiMimicEndpoint;
-  }
-}
+export const Get = (path: string) => createEndpointDecorator('GET', path);
 
 /** HTTP POST method endpoint */
-export function Post(path: string) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    target[propertyKey]['endpoint'] = {
-      method: 'POST',
-      ...resolvePathRegex(path),
-      handler: target[propertyKey]
-    } as NgxApiMimicEndpoint;
-  }
-}
+export const Post = (path: string) => createEndpointDecorator('POST', path);
 
 /** HTTP PUT method endpoint */
-export function Put(path: string) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    target[propertyKey]['endpoint'] = {
-      method: 'PUT',
-      ...resolvePathRegex(path),
-      handler: target[propertyKey]
-    } as NgxApiMimicEndpoint;
-  }
-}
+export const Put = (path: string) => createEndpointDecorator('PUT', path);
 
 /** HTTP DELETE method endpoint */
-export function Delete(path: string) {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    target[propertyKey]['endpoint'] = {
-      method: 'DELETE',
-      ...resolvePathRegex(path),
-      handler: target[propertyKey]
-    } as NgxApiMimicEndpoint;
-  }
-}
+export const Delete = (path: string) => createEndpointDecorator('DELETE', path);
 
-function getAllFuncs(toCheck: any) {
-  const props: any[] = [];
-  let obj = toCheck;
-  do {
-    props.push(
-      ...Object.getOwnPropertyNames(obj)
-    );
-  } while (
-    obj = Object.getPrototypeOf(obj)
-    );
-
-  return props
-    .sort()
-    .filter((elem: any, index: number, arr: any[]) => {
-      return elem != arr[index + 1]
-        && typeof toCheck[elem] == 'function';
+/** Extract functions from Controller class */
+function getAllFunctions(obj: object): string[] {
+  const methodNames: string[] = [];
+  let currentProto = obj;
+  while (currentProto && currentProto !== Object.prototype) {
+    const props = Object.getOwnPropertyNames(currentProto);
+    props.forEach((name) => {
+      if (name !== 'constructor' && typeof (currentProto as any)[name] === 'function') {
+        methodNames.push(name);
+      }
     });
+    currentProto = Object.getPrototypeOf(currentProto);
+  }
+  return [...new Set(methodNames)];
 }
 
 /** Controller - contains set of methods */
-export function Controller(basePath: string) {
-  return (target: any) => {
-    target.prototype['basePath'] = basePath;
-    target.prototype['endpoints'] = target.prototype['endpoints'] || [];
-    target.prototype['_mapEndpoints'] = (target: any) => {
-      getAllFuncs(target)
-        .forEach((propName: string) => {
-          const prop = target[propName];
-          if (prop.hasOwnProperty('endpoint')) {
-            target['endpoints'].push(prop.endpoint);
+export function Controller(basePath: string): ClassDecorator {
+  return (constructor: Function) => {
+    const proto = constructor.prototype as ControllerPrototype;
+    proto.basePath = basePath;
+    proto.endpoints = [];
+    proto._mapEndpoints = function (instance: object) {
+      const allMethodNames = getAllFunctions(instance);
+      allMethodNames.forEach((name) => {
+        const method = (instance as any)[name] as DecoratedHandler;
+        if (method && method.endpoint) {
+          if (!proto.endpoints.some((e) => e === method.endpoint)) {
+            proto.endpoints.push(method.endpoint);
           }
-        });
-    }
-  }
+        }
+      });
+    };
+  };
 }
