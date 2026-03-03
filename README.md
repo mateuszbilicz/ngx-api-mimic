@@ -16,9 +16,11 @@ Also, if you're recruiter or team member who wants to check my portfolio, then t
 - [X] Import data mock
 - [X] Check api-mock for any possible upgrades
 - [X] Check data mock for any possible upgrades
-- [ ] Improve typing in data mocks
+- [X] Improve typing in data mocks
+- [ ] Add descriptions to data mock types
 - [ ] Improve typing in router
-- [ ] Create api mimic router factory
+- [X] Create api mimic router factory
+- [ ] Create @UsingSchematic(schematic, storeName?) decorator for Controller classes
 - [ ] Write tests
 - [ ] Write app with example usages
 
