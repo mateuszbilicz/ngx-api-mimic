@@ -20,7 +20,9 @@ Also, if you're recruiter or team member who wants to check my portfolio, then t
 - [X] Add descriptions to data mock types
 - [X] Improve typing in router
 - [X] Create api mimic router factory
-- [ ] Create @UsingSchematic(schematic, storeName?) decorator for Controller classes
+- [X] Create @UsingSchema(storeName?, schematic) decorator for Controller classes
+- [X] Fixes in api mock existing features
+- [X] Add function decorators to api mock
 - [ ] Write tests
 - [ ] Write app with example usages
 

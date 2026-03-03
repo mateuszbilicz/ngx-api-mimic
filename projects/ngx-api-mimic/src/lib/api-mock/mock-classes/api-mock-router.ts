@@ -1,6 +1,8 @@
 import { HttpHeaders } from '@angular/common/http';
 import {
   Class,
+  ControllerPrototype,
+  DecoratedHandler,
   HttpMethod,
   NgxApiMimicEndpoint,
   NgxApiMimicMethodLookupResult,
@@ -14,13 +16,13 @@ export class NgxApiMimicRouter {
   /** Add Controller class to the router */
   add(cl: Class) {
     const instance = new cl();
-    const proto = Object.getPrototypeOf(instance);
-    if (typeof proto['_mapEndpoints'] === 'function') {
-      proto['_mapEndpoints'](instance);
+    const proto = Object.getPrototypeOf(instance) as ControllerPrototype;
+    if (typeof proto._mapEndpoints === 'function') {
+      proto._mapEndpoints(instance);
     }
-    this.controllers.set(proto['basePath'], {
+    this.controllers.set(proto.basePath, {
       instance: instance,
-      endpoints: proto['endpoints'] || [],
+      endpoints: proto.endpoints || [],
     });
   }
 
@@ -31,61 +33,95 @@ export class NgxApiMimicRouter {
 
   /** Get specific router method inside some of the Controller classes */
   getMethod(method: HttpMethod, path: string): NgxApiMimicMethodLookupResult | undefined {
-    let normalizedPath = path.startsWith('/') ? path.slice(1) : path;
-    const [pathPart, queryParamsPart] = normalizedPath.split('?');
-    let [base, ...rest] = pathPart.split('/');
+    let cleanPath = path.replace(/^https?:\/\/[^\/]+/, '');
+    cleanPath = cleanPath.startsWith('/') ? cleanPath.slice(1) : cleanPath;
+
+    const [pathPart, queryParamsPart] = cleanPath.split('?');
+    const pathSegments = pathPart.split('/').filter((s) => s.length > 0);
+    const base = pathSegments[0];
+
     const controllerInfo = this.controllers.get(base);
     if (!controllerInfo) return undefined;
-    const endpoints = controllerInfo.endpoints,
-      relativePath = '/' + rest.join('/'),
-      endpoint = endpoints.find(
-        (ep: NgxApiMimicEndpoint) => ep.method === method && ep.pathRegex.test(relativePath),
-      );
+
+    const relativePath = pathSegments.slice(1).join('/');
+
+    const endpoint = controllerInfo.endpoints.find(
+      (ep) => ep.method === method && ep.pathRegex.test(relativePath),
+    );
+
     if (!endpoint) return undefined;
-    let urlParams = new Array(endpoint.urlParams.length).fill(undefined) as (string | undefined)[];
-    (endpoint.pathRegex.exec(relativePath) ?? [])
-      .slice(1)
-      .forEach((match: string, index: number) => {
-        urlParams[index] = match;
-      });
+
+    let urlParams: (string | undefined)[] = [];
+    const match = endpoint.pathRegex.exec(relativePath);
+    if (match) {
+      urlParams = match.slice(1);
+    }
+
     let queryParamMap: NgxApiMimicQueryParamMap = new Map();
     if (queryParamsPart) {
-      queryParamsPart.split('&').forEach((paramPart) => {
-        let [name, data] = paramPart.split('=');
-        if (!name) return;
-        let parsedData: string | string[];
-        const decodedData = data ? decodeURIComponent(data) : '';
-        if (decodedData.includes(',')) {
-          parsedData = decodedData.split(',');
-        } else {
-          parsedData = decodedData;
+      queryParamsPart.split('&').forEach((p) => {
+        let [name, val] = p.split('=');
+        if (name) {
+          const decoded = decodeURIComponent(val || '');
+          queryParamMap.set(name, decoded.includes(',') ? decoded.split(',') : decoded);
         }
-        queryParamMap.set(name, parsedData);
       });
     }
-    return {
-      endpoint,
-      relativePath,
-      urlParams,
-      queryParamMap,
-    } as NgxApiMimicMethodLookupResult;
+
+    return { endpoint, relativePath: `/${relativePath}`, urlParams, queryParamMap };
   }
 
   /** Find and execute endpoint method */
   execMethod(method: HttpMethod, path: string, body: any, headers: HttpHeaders) {
     const lookup = this.getMethod(method, path);
     if (!lookup) return undefined;
-    const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
-    const base = normalizedPath.split('/')[0];
+
+    let cleanPath = path.replace(/^https?:\/\/[^\/]+/, '').replace(/^\//, '');
+    const base = cleanPath.split('/')[0];
     const controllerInfo = this.controllers.get(base);
+
     if (!controllerInfo) return undefined;
-    const args = [
-      ...lookup.urlParams,
-      ...(body !== undefined ? [body] : []),
-      lookup.queryParamMap,
-      headers,
-    ];
-    return lookup.endpoint.handler.apply(controllerInfo.instance, args);
+
+    const handler = lookup.endpoint.handler as DecoratedHandler;
+    const proto = Object.getPrototypeOf(controllerInfo.instance) as ControllerPrototype;
+
+    const paramsMeta = proto['_params_meta']?.get(handler._methodName || '');
+    let finalArgs: any[] = [];
+
+    if (paramsMeta) {
+      paramsMeta.forEach((meta) => {
+        switch (meta.type) {
+          case 'URL_PARAM':
+            const pIdx = lookup.endpoint.urlParams.indexOf(meta.name!);
+            finalArgs[meta.index] = lookup.urlParams[pIdx];
+            break;
+          case 'QUERY':
+            finalArgs[meta.index] = lookup.queryParamMap.get(meta.name!);
+            break;
+          case 'QUERIES':
+            finalArgs[meta.index] = lookup.queryParamMap;
+            break;
+          case 'BODY':
+            finalArgs[meta.index] = body;
+            break;
+          case 'HEADERS':
+            finalArgs[meta.index] = headers;
+            break;
+          case 'HEADER':
+            finalArgs[meta.index] = headers.get(meta.name!);
+            break;
+        }
+      });
+    } else {
+      finalArgs = [
+        ...lookup.urlParams,
+        ...(body !== undefined ? [body] : []),
+        lookup.queryParamMap,
+        headers,
+      ];
+    }
+
+    return handler.apply(controllerInfo.instance, finalArgs);
   }
 }
 

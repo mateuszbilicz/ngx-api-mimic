@@ -1,7 +1,10 @@
-import { HttpMethod, NgxApiMimicEndpoint, RegexCheckResult } from '../../api/api-mock';
-
-/** Helper type for creating function decorators */
-type DecoratedHandler = Function & { endpoint?: NgxApiMimicEndpoint };
+import {
+  DecoratedHandler,
+  HttpMethod,
+  NgxApiMimicEndpoint,
+  NgxApiMimicParamMetadata,
+  RegexCheckResult,
+} from '../../api/api-mock';
 
 /** Controller prototype with metadata */
 interface ControllerPrototype {
@@ -13,20 +16,51 @@ interface ControllerPrototype {
 
 /** Resolve path regex inside method decorator */
 function resolvePathRegex(path: string): RegexCheckResult {
-  let resolvedPath = path.split('/');
-  if (resolvedPath[0] === '/') resolvedPath.splice(0, 1);
+  let parts = path.split('/').filter((p) => p.length > 0);
   let urlParams: string[] = [];
-  resolvedPath = resolvedPath.map((part) => {
-    const isParam = part.startsWith(':');
-    if (isParam) {
+
+  const resolvedParts = parts.map((part) => {
+    if (part.startsWith(':')) {
       urlParams.push(part.slice(1));
-      return '(\\w+)';
-    } else return part;
+      return '([^/]+)';
+    }
+    return part;
   });
+
   return {
-    pathRegex: new RegExp(`^${resolvedPath.join('\/')}$`, 'm'),
+    pathRegex: new RegExp(`^\/?${resolvedParts.join('\/')}\/?$`),
     urlParams,
   };
+}
+
+/** Internal helper for attaching parameter metadata to the controller prototype */
+function addParamMetadata(
+  target: object,
+  propertyKey: string | symbol,
+  metadata: NgxApiMimicParamMetadata,
+): void {
+  const proto = target as ControllerPrototype;
+  if (!proto['_params_meta']) {
+    proto['_params_meta'] = new Map();
+  }
+  const methodMetadata = proto['_params_meta'].get(propertyKey) || [];
+  methodMetadata.push(metadata);
+  proto['_params_meta'].set(propertyKey, methodMetadata);
+}
+
+/** Extract functions from Controller class */
+function getAllFunctions(obj: object): string[] {
+  const methodNames: string[] = [];
+  let currentProto = obj;
+  while (currentProto && currentProto !== Object.prototype) {
+    Object.getOwnPropertyNames(currentProto).forEach((name) => {
+      if (name !== 'constructor' && typeof (currentProto as any)[name] === 'function') {
+        methodNames.push(name);
+      }
+    });
+    currentProto = Object.getPrototypeOf(currentProto);
+  }
+  return [...new Set(methodNames)];
 }
 
 /** Creates decorator function */
@@ -37,8 +71,8 @@ function createEndpointDecorator(method: HttpMethod, path: string): MethodDecora
     descriptor: TypedPropertyDescriptor<any>,
   ) => {
     const handler = descriptor.value as DecoratedHandler;
-
     if (handler && typeof handler === 'function') {
+      handler._methodName = propertyKey.toString();
       handler.endpoint = {
         method,
         ...resolvePathRegex(path),
@@ -60,31 +94,57 @@ export const Put = (path: string) => createEndpointDecorator('PUT', path);
 /** HTTP DELETE method endpoint */
 export const Delete = (path: string) => createEndpointDecorator('DELETE', path);
 
-/** Extract functions from Controller class */
-function getAllFunctions(obj: object): string[] {
-  const methodNames: string[] = [];
-  let currentProto = obj;
-  while (currentProto && currentProto !== Object.prototype) {
-    const props = Object.getOwnPropertyNames(currentProto);
-    props.forEach((name) => {
-      if (name !== 'constructor' && typeof (currentProto as any)[name] === 'function') {
-        methodNames.push(name);
-      }
+/** Injects specific query parameter or the whole query map */
+export function Query(name?: string): ParameterDecorator {
+  return (target, propertyKey, parameterIndex) => {
+    addParamMetadata(target, propertyKey!, {
+      index: parameterIndex,
+      type: name ? 'QUERY' : 'QUERIES',
+      name,
     });
-    currentProto = Object.getPrototypeOf(currentProto);
-  }
-  return [...new Set(methodNames)];
+  };
+}
+
+/** Injects the request body */
+export function Body(): ParameterDecorator {
+  return (target, propertyKey, parameterIndex) => {
+    addParamMetadata(target, propertyKey!, {
+      index: parameterIndex,
+      type: 'BODY',
+    });
+  };
+}
+
+/** Injects specific URL path parameter */
+export function UrlParam(name: string): ParameterDecorator {
+  return (target, propertyKey, parameterIndex) => {
+    addParamMetadata(target, propertyKey!, {
+      index: parameterIndex,
+      type: 'URL_PARAM',
+      name,
+    });
+  };
+}
+
+/** Injects specific header or the whole HttpHeaders object */
+export function Headers(name?: string): ParameterDecorator {
+  return (target, propertyKey, parameterIndex) => {
+    addParamMetadata(target, propertyKey!, {
+      index: parameterIndex,
+      type: name ? 'HEADER' : 'HEADERS',
+      name,
+    });
+  };
 }
 
 /** Controller - contains set of methods */
 export function Controller(basePath: string): ClassDecorator {
   return (constructor: Function) => {
     const proto = constructor.prototype as ControllerPrototype;
-    proto.basePath = basePath;
+    proto.basePath = basePath.replace(/^\/|\/$/g, '');
     proto.endpoints = [];
     proto._mapEndpoints = function (instance: object) {
-      const allMethodNames = getAllFunctions(instance);
-      allMethodNames.forEach((name) => {
+      getAllFunctions(instance).forEach((name) => {
         const method = (instance as any)[name] as DecoratedHandler;
         if (method && method.endpoint) {
           if (!proto.endpoints.some((e) => e === method.endpoint)) {
