@@ -10,6 +10,11 @@ import {
   UrlParam,
   UsingSchema,
   Query,
+  ParseIntPipe,
+  CanActivate,
+  NgxApiMimicExecutionContext,
+  NgxApiMimicException,
+  UseGuards,
 } from 'ngx-api-mimic';
 
 interface UserCreate {
@@ -29,7 +34,21 @@ interface UserList {
   totalCount: number;
 }
 
+class AuthGuard implements CanActivate {
+  canActivate(context: NgxApiMimicExecutionContext): boolean {
+    const request = context.getRequest();
+    const authHeader = request.headers.get('Authorization');
+
+    if (authHeader === 'Bearer test') {
+      return true;
+    }
+
+    throw new NgxApiMimicException(401, 'Unauthorized: Invalid or missing token');
+  }
+}
+
 @Controller('users')
+@UseGuards(AuthGuard)
 @UsingSchema<UserList>('users', {
   type: 'object',
   items: {
@@ -76,13 +95,13 @@ class UsersController {
   @Get('/list')
   listUsers(
     @Query('textFilter') textFilter = '',
-    @Query('skip') skip: string | number = 0,
-    @Query('count') count: string | number = 10,
+    @Query('skip', ParseIntPipe) skip: number = 0,
+    @Query('count', ParseIntPipe) count: number = 10,
   ) {
-    console.log('LIST USERS')
+    console.log('LIST USERS');
     textFilter = (textFilter || '').toLowerCase();
-    skip = Number(skip || 0);
-    count = Number(count || 10);
+    skip = skip || 0;
+    count = count || 10;
     return {
       items: this.data.items
         .filter(
@@ -108,43 +127,37 @@ class UsersController {
       id: Math.round(Math.random() * 999999).toString(36) + Date.now().toString(36),
     };
     this.data = {
-      items: [
-        ...this.data.items,
-        newUser
-      ],
-      totalCount: this.data.totalCount + 1
-    }
+      items: [...this.data.items, newUser],
+      totalCount: this.data.totalCount + 1,
+    };
     return newUser;
   }
 
   @Put('/:id')
-  updateUser(
-    @UrlParam('id') id: string,
-    @Body() userUpdate: Partial<UserCreate>
-  ) {
-    const currentUser = this.data.items.find(user => user.id === id);
+  updateUser(@UrlParam('id') id: string, @Body() userUpdate: Partial<UserCreate>) {
+    const currentUser = this.data.items.find((user) => user.id === id);
     if (!currentUser) throw new Error('User not found');
     const updatedUser = {
       ...currentUser,
       ...userUpdate,
     };
     this.data = {
-      items: this.data.items.map(user => {
+      items: this.data.items.map((user) => {
         if (user.id !== id) return user;
         return updatedUser;
       }),
-      totalCount: this.data.totalCount
-    }
+      totalCount: this.data.totalCount,
+    };
     return updatedUser;
   }
 
   @Delete('/:id')
   deleteUser(@UrlParam('id') id: string) {
     this.data = {
-      items: this.data.items.filter(user => user.id !== id),
-      totalCount: this.data.totalCount - 1
-    }
-    return {ok: true};
+      items: this.data.items.filter((user) => user.id !== id),
+      totalCount: this.data.totalCount - 1,
+    };
+    return { ok: true };
   }
 }
 

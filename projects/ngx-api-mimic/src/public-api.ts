@@ -10,4 +10,6 @@ export * from './lib/data-mock/predefined-values';
 export * from './lib/api-mock/api-mock.interceptor';
 export * from './lib/api-mock/mock-classes/mock-decorators';
 export * from './lib/api-mock/mock-classes/api-mock-router';
+export * from './lib/api-mock/mock-classes/ngx-api-mimic-exception';
+export * from './lib/api-mock/api-mock-pipes';
 export * from './lib/mixed/using-schema.decorator';

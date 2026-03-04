@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
+
 /** Router endpoint function argument param map type */
 export type NgxApiMimicQueryParamMap = Map<string, string | string[]>;
 
@@ -30,10 +33,8 @@ export type Class<T = any> = new (...args: any[]) => T;
 /** Supported parameter types for injection */
 export type NgxApiMimicParamType =
   | 'QUERY'
-  | 'QUERIES'
   | 'BODY'
   | 'PARAM'
-  | 'HEADERS'
   | 'HEADER'
   | 'URL_PARAM';
 
@@ -42,6 +43,7 @@ export interface NgxApiMimicParamMetadata {
   index: number;
   type: NgxApiMimicParamType;
   name?: string;
+  pipes?: (Class<PipeTransform> | PipeTransform)[];
 }
 
 /** Controller prototype definition including internal metadata keys */
@@ -63,4 +65,36 @@ export interface NgxApiMimicController<TData = any> {
 export type DecoratedHandler = Function & {
   endpoint?: NgxApiMimicEndpoint;
   _methodName?: string;
+  _guards?: (Class<CanActivate> | CanActivate)[];
 };
+
+/** Context of the current execution for Guards */
+export interface NgxApiMimicExecutionContext {
+  getClass<T = any>(): Class<T>;
+  getHandler(): Function;
+  getArgs(): any[];
+  getRequest(): {
+    params: (string | undefined)[];
+    query: NgxApiMimicQueryParamMap;
+    body: any;
+    headers: HttpHeaders;
+    url: string;
+  };
+}
+
+/** Interface that Guards must implement */
+export interface CanActivate {
+  canActivate(context: NgxApiMimicExecutionContext): boolean | Promise<boolean> | Observable<boolean>;
+}
+
+/** Metadata for Pipe transformation */
+export interface ArgumentMetadata {
+  readonly type: NgxApiMimicParamType;
+  readonly metatype?: any;
+  readonly data?: string;
+}
+
+/** Interface that Pipes must implement */
+export interface PipeTransform<T = any, R = any> {
+  transform(value: T, metadata: ArgumentMetadata): R;
+}

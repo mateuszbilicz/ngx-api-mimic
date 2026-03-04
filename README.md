@@ -23,8 +23,9 @@ Also, if you're recruiter or team member who wants to check my portfolio, then t
 - [X] Create @UsingSchema(storeName?, schematic) decorator for Controller classes
 - [X] Fixes in api mock existing features
 - [X] Add function decorators to api mock
-- [ ] Add support for response type in api mock - error, success, etc - includes modifications in interceptor
-- [ ] Add support for fake guards
+- [X] Add support for response type in api mock - error, success, etc - includes modifications in interceptor
+- [X] Add support for fake guards
+- [X] Add support for pipes
 - [ ] Write tests
 - [ ] Write app with example usages
 

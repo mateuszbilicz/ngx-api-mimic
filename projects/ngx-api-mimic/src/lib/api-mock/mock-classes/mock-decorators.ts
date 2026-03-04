@@ -1,8 +1,11 @@
 import {
+  CanActivate,
+  Class,
   DecoratedHandler,
   HttpMethod,
   NgxApiMimicEndpoint,
   NgxApiMimicParamMetadata,
+  PipeTransform,
   RegexCheckResult,
 } from '../../api/api-mock';
 
@@ -95,44 +98,54 @@ export const Put = (path: string) => createEndpointDecorator('PUT', path);
 export const Delete = (path: string) => createEndpointDecorator('DELETE', path);
 
 /** Injects specific query parameter or the whole query map */
-export function Query(name?: string): ParameterDecorator {
+export function Query(
+  name: string,
+  ...pipes: (Class<PipeTransform> | PipeTransform)[]
+): ParameterDecorator {
   return (target, propertyKey, parameterIndex) => {
     addParamMetadata(target, propertyKey!, {
       index: parameterIndex,
-      type: name ? 'QUERY' : 'QUERIES',
+      type: 'QUERY',
       name,
+      pipes,
     });
   };
 }
 
 /** Injects the request body */
-export function Body(): ParameterDecorator {
+export function Body(
+  ...pipes: (Class<PipeTransform> | PipeTransform)[]): ParameterDecorator {
   return (target, propertyKey, parameterIndex) => {
     addParamMetadata(target, propertyKey!, {
       index: parameterIndex,
       type: 'BODY',
+      pipes,
     });
   };
 }
 
 /** Injects specific URL path parameter */
-export function UrlParam(name: string): ParameterDecorator {
+export function UrlParam(name: string,
+  ...pipes: (Class<PipeTransform> | PipeTransform)[]): ParameterDecorator {
   return (target, propertyKey, parameterIndex) => {
     addParamMetadata(target, propertyKey!, {
       index: parameterIndex,
       type: 'URL_PARAM',
       name,
+      pipes,
     });
   };
 }
 
 /** Injects specific header or the whole HttpHeaders object */
-export function Headers(name?: string): ParameterDecorator {
+export function Headers(name: string,
+  ...pipes: (Class<PipeTransform> | PipeTransform)[]): ParameterDecorator {
   return (target, propertyKey, parameterIndex) => {
     addParamMetadata(target, propertyKey!, {
       index: parameterIndex,
-      type: name ? 'HEADER' : 'HEADERS',
+      type: 'HEADER',
       name,
+      pipes,
     });
   };
 }
@@ -155,3 +168,16 @@ export function Controller(basePath: string): ClassDecorator {
     };
   };
 }
+
+/** Stores guards at class or method level */
+export function UseGuards(...guards: (Class<CanActivate> | CanActivate)[]): MethodDecorator & ClassDecorator {
+  return (target: any, propertyKey?: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => {
+    if (descriptor) {
+      const handler = descriptor.value;
+      handler._guards = guards;
+    } else {
+      target.prototype._guards = guards;
+    }
+  };
+}
+

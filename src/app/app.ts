@@ -14,19 +14,21 @@ export class App {
 
   constructor() {
     // These are just for quick testing, they will disappear as soon as I finish upgrading library...
-    /*
     this.httpClient
       .get('/users/list', {
         params: {
           textFilter: 'And',
           skip: 0,
           count: 4
+        },
+        headers: {
+          'Authorization': 'Bearer test'
         }
       })
       .pipe(takeUntilDestroyed())
       .subscribe((usersList) => {
         console.log('GET /users/list', usersList);
-      });*/
+      });
     /*this.httpClient
       .get('/users/EDm1DnooXCLbkCipuh16ii42x')
       .pipe(takeUntilDestroyed())
