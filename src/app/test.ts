@@ -161,4 +161,6 @@ class UsersController {
   }
 }
 
-export const interceptor = ngxApiMockInterceptorFactory(ngxApiMimicRouterFactory([UsersController]));
+const router = ngxApiMimicRouterFactory([UsersController]);
+// router.usePrefix('test');
+export const interceptor = ngxApiMockInterceptorFactory(router);

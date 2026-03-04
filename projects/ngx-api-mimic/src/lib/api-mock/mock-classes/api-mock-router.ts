@@ -8,7 +8,7 @@ import {
   NgxApiMimicExecutionContext,
   NgxApiMimicMethodLookupResult,
   NgxApiMimicParamMetadata,
-  NgxApiMimicQueryParamMap,
+  NgxApiMimicQueryParamMap
 } from '../../api/api-mock';
 import { NgxApiMimicException } from './ngx-api-mimic-exception';
 import { firstValueFrom, isObservable, Observable } from 'rxjs';
@@ -16,6 +16,17 @@ import { firstValueFrom, isObservable, Observable } from 'rxjs';
 /** API Mimic router - routes requests between controllers and their methods */
 export class NgxApiMimicRouter {
   private controllers: Map<string, { instance: any; endpoints: NgxApiMimicEndpoint[] }> = new Map();
+  private prefix: string = '';
+
+  /** Sets the global prefix for this router (e.g. 'api/v1') */
+  usePrefix(path: string) {
+    this.prefix = path.replace(/^\/|\/$/g, '');
+    return this;
+  }
+
+  getPrefix(): string {
+    return this.prefix;
+  }
 
   add(cl: Class) {
     const instance = new cl();
@@ -37,6 +48,11 @@ export class NgxApiMimicRouter {
     let cleanPath = path.replace(/^https?:\/\/[^\/]+/, '');
     cleanPath = cleanPath.startsWith('/') ? cleanPath.slice(1) : cleanPath;
 
+    if (this.prefix) {
+      if (!cleanPath.startsWith(this.prefix)) return undefined;
+      cleanPath = cleanPath.slice(this.prefix.length).replace(/^\//, '');
+    }
+
     const [pathPart, queryParamsPart] = cleanPath.split('?');
     const pathSegments = pathPart.split('/').filter((s) => s.length > 0);
     const base = pathSegments[0];
@@ -45,7 +61,6 @@ export class NgxApiMimicRouter {
     if (!controllerInfo) return undefined;
 
     const relativePath = pathSegments.slice(1).join('/');
-
     const endpoint = controllerInfo.endpoints.find(
       (ep) => ep.method === method && ep.pathRegex.test(relativePath),
     );
@@ -69,22 +84,31 @@ export class NgxApiMimicRouter {
       });
     }
 
-    return { endpoint, relativePath: `/${relativePath}`, urlParams, queryParamMap };
+    return {
+      endpoint,
+      instance: controllerInfo.instance,
+      relativePath: `/${relativePath}`,
+      urlParams,
+      queryParamMap,
+    };
   }
 
   /** Updated execMethod to support async Guards and Pipes */
   async execMethod(method: HttpMethod, path: string, body: any, headers: HttpHeaders) {
-    const lookup = this.getMethod(method, path);
-    if (!lookup) return undefined;
-
     let cleanPath = path.replace(/^https?:\/\/[^\/]+/, '').replace(/^\//, '');
-    const base = cleanPath.split('/')[0];
-    const controllerInfo = this.controllers.get(base);
 
-    if (!controllerInfo) return undefined;
+    if (this.prefix && !cleanPath.startsWith(this.prefix)) {
+      return undefined;
+    }
 
-    const handler = lookup.endpoint.handler as DecoratedHandler;
-    const instance = controllerInfo.instance;
+    const lookup = this.getMethod(method, path);
+
+    if (!lookup) {
+      throw new NgxApiMimicException(404, `Cannot ${method} ${path} - Route not found`);
+    }
+
+    const { endpoint, instance } = lookup;
+    const handler = endpoint.handler as DecoratedHandler;
     const proto = Object.getPrototypeOf(instance) as ControllerPrototype;
 
     const context: NgxApiMimicExecutionContext = {
@@ -100,23 +124,21 @@ export class NgxApiMimicRouter {
       }),
     };
 
+    // Guards
     const guards = [...(proto['_guards'] || []), ...(handler._guards || [])];
-
     for (const guard of guards) {
       const guardInstance = typeof guard === 'function' ? new (guard as any)() : guard;
       const canActivate = await this.resolveValue(guardInstance.canActivate(context));
-      if (!canActivate) {
-        throw new NgxApiMimicException(403, 'Forbidden resource');
-      }
+      if (!canActivate) throw new NgxApiMimicException(403, 'Forbidden resource');
     }
 
+    // Params & Pipes
     const paramsMeta = proto['_params_meta']?.get(handler._methodName || '');
     let finalArgs: any[] = [];
 
     if (paramsMeta) {
       for (const meta of paramsMeta) {
         let value = this.getRawValue(meta, lookup, body, headers);
-
         if (meta.pipes && meta.pipes.length > 0) {
           for (const pipe of meta.pipes) {
             const pipeInstance = typeof pipe === 'function' ? new (pipe as any)() : pipe;

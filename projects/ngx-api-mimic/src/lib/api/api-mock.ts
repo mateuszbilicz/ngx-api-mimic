@@ -7,6 +7,7 @@ export type NgxApiMimicQueryParamMap = Map<string, string | string[]>;
 /** Router endpoint lookup object */
 export type NgxApiMimicMethodLookupResult = {
   endpoint: NgxApiMimicEndpoint;
+  instance: any;
   relativePath: `/${string}`;
   urlParams: (string | undefined)[];
   queryParamMap: NgxApiMimicQueryParamMap;
@@ -97,4 +98,11 @@ export interface ArgumentMetadata {
 /** Interface that Pipes must implement */
 export interface PipeTransform<T = any, R = any> {
   transform(value: T, metadata: ArgumentMetadata): R;
+}
+
+/** Options of ngxApiMockInterceptorFactory */
+export interface NgxApiMimicInterceptorOptions {
+  minDelay?: number;
+  maxDelay?: number;
+  enableLog?: boolean;
 }
