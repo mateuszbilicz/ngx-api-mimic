@@ -10,7 +10,7 @@ In addition, you can mock whole REST API!
 This library gives you complete set to create API mocks: angular interceptor, router, controllers, endpoint decorators, guard decorators, pipes and param decorators -
 lots of things that can be found in NestJS.
 What's difference between this library and others?
-You can mock data and API at the same time just by using @UseSchema on the Controller
+You can mock data and API at the same time just by using @UsingSchema on the Controller
 which lets you create RESTfull Controllers.
 Also, you can create real data services that call this mocked api endpoints and then just delete interceptor to use your real API!
 
