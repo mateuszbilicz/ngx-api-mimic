@@ -1,0 +1,20 @@
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0">Preview</p-tab>
+    <p-tab value="1">Code</p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">
+      <span #onView></span>
+      @defer (on idle) {
+        <ng-container *ngTemplateOutlet="previewTemplate()"/>
+      }
+    </p-tabpanel>
+    <p-tabpanel value="1">
+      <span #onView></span>
+      @defer (on viewport(onView)) {
+        <ng-container *ngTemplateOutlet="codeTemplate()"/>
+      }
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

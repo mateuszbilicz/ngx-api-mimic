@@ -2,16 +2,18 @@ import { Component, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { switchMap, tap } from 'rxjs';
+import { RouterOutlet } from '@angular/router';
+import { NavigationComponent } from './core/elements/navigation/navigation.component';
+import { BreadcrumbNavigationComponent } from './core/elements/breadcrumb-navigation/breadcrumb-navigation.component';
 
 @Component({
   selector: 'app-root',
-  imports: [],
+  imports: [RouterOutlet, NavigationComponent, BreadcrumbNavigationComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected readonly httpClient = inject(HttpClient);
-
   constructor() {
     // These are just for quick testing, they will disappear as soon as I finish upgrading library...
     this.httpClient
@@ -19,11 +21,11 @@ export class App {
         params: {
           textFilter: 'And',
           skip: 0,
-          count: 4
+          count: 4,
         },
         headers: {
-          'Authorization': 'Bearer test'
-        }
+          Authorization: 'Bearer test',
+        },
       })
       .pipe(takeUntilDestroyed())
       .subscribe((usersList) => {

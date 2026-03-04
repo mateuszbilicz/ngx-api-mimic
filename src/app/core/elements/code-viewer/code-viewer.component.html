@@ -1,0 +1,35 @@
+@if (hasFilename()) {
+  <p-panel [toggleable]="true">
+    <ng-template #header>
+      <div>
+        <i class="pi pi-file mr-2 text-blue-600"></i><span aria-label="{{filename()}}">{{ filename() }}</span>
+      </div>
+    </ng-template>
+    <ng-container *ngTemplateOutlet="editor"/>
+    <ng-template #footer>
+      <ng-container *ngTemplateOutlet="controls"/>
+    </ng-template>
+  </p-panel>
+} @else {
+  <ng-container *ngTemplateOutlet="editor"/>
+  <ng-container *ngTemplateOutlet="controls"/>
+}
+
+<ng-template #editor>
+  <span #onView></span>
+  @defer (on viewport(onView)) {
+    <ngx-monaco-editor [options]="editorOptions()"
+                       [ngModel]="code()"
+                       [style.height]="editorHeight()"/>
+  }
+</ng-template>
+
+<ng-template #controls>
+  <div class="flex w-full justify-end">
+    <p-button icon="pi pi-copy"
+              label="Copy to clipboard"
+              size="small"
+              [severity]="copyToClipboardResultSeverity()"
+              (onClick)="copyToClipboard()"/>
+  </div>
+</ng-template>

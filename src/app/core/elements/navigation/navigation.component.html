@@ -1,0 +1,55 @@
+<p-button
+  icon="pi pi-bars"
+  [text]="true"
+  class="nav-button"
+  (onClick)="drawerVisible.set(true)"
+/>
+
+<p-menubar [model]="navigationEntries()" class="desktop-menu" #menu>
+  <ng-template #start>
+    <span>NGX API Mimic</span>
+  </ng-template>
+  <ng-template #item let-item>
+    <a [id]="item.id"
+       class="flex items-center p-menubar-item-link px-3 py-2 cursor-pointer"
+       (click)="onEntryClick(item, $event)">
+      @if (item.icon) {
+        <span [class]="item.icon" class="mr-2"></span>
+      }
+      <span class="font-medium">{{ item.label }}</span>
+      @if (item.hasChildren) {
+        <span class="ml-2 flex items-center">
+            @if (item.loading) {
+              <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
+            } @else {
+              <i class="pi pi-angle-down opacity-40 text-xs"></i>
+            }
+          </span>
+      }
+    </a>
+  </ng-template>
+</p-menubar>
+
+<p-drawer [(visible)]="drawerVisible" header="NGX API Mimic">
+  <p-panelMenu [model]="navigationEntries()" [multiple]="true">
+    <ng-template #item let-item>
+      <div class="flex items-center justify-between w-full p-3 cursor-pointer" (click)="onEntryClick(item, $event)">
+        <div class="flex items-center">
+          @if (item.icon) {
+            <span [class]="item.icon" class="mr-2"></span>
+          }
+          <span class="font-medium">{{ item.label }}</span>
+        </div>
+        @if (item.hasChildren) {
+          <div class="flex items-center">
+            @if (item.loading) {
+              <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
+            } @else {
+              <i [class]="item.expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="opacity-40 text-xs"></i>
+            }
+          </div>
+        }
+      </div>
+    </ng-template>
+  </p-panelMenu>
+</p-drawer>

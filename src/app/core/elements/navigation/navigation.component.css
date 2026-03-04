@@ -1,0 +1,20 @@
+:host {
+  width: 100%;
+
+  p-button.nav-button {
+    display: none;
+  }
+
+  @media screen and (max-width: 754px) {
+    display: flex;
+    width: auto;
+
+    p-button.nav-button {
+      display: inline-block;
+    }
+
+    p-menubar {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<!--
+<app-doc-page name="Test DOCS page!">
+  <app-doc-tabs [codeTemplate]="code"
+                [previewTemplate]="example"/>
+</app-doc-page>
+
+<ng-template #example>
+  <p>
+    Example...
+  </p>
+</ng-template>
+
+<ng-template #code>
+  <app-code-viewer filename="test.ts"
+                   code="console.log('aaaa')"/>
+</ng-template>
+-->
+<div class="flex sm:flex-col overflow-x-auto justify-start items-center sm:items-start">
+  <app-navigation/>
+  <app-breadcrumb-navigation/>
+</div>
+<div class="p-2 w-full">
+  <router-outlet/>
+</div>
