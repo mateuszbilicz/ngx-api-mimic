@@ -1,0 +1,37 @@
+# NGX API Mimic (NgxApiMock)
+
+> A powerful library to create backend-like API mocks under the HTTP Interceptor inside Angular applications.
+
+- **Version**: 0.0.7
+- **Author**: Mateusz Bilicz (https://mateuszbilicz.pl)
+- **Repository**: https://github.com/mateuszbilicz/ngx-api-mimic
+- **Website/Docs**: https://ngx-api-mock.mateuszbilicz.pl
+- **NPM Package**: ngx-api-mimic
+
+## Description
+This library allows developers to mock data and create a fake REST API under an HTTP Interceptor inside Angular applications.
+The Mocking data functionality allows generating any type of data based on a schematic. Writing schematics is straightforward when using TypeScript interfaces, as the IDE will provide field hints. Mocked data can be configured to be automatically stored in the LocalStorage.
+
+This library provides a complete toolset to create API mocks, including:
+- Angular interceptor
+- Router
+- Controllers
+- Endpoint decorators
+- Guard decorators
+- Pipes and Param decorators
+
+## Distinct Features
+Unlike generic HTTP interceptors, this library allows developers to mock data and the API simultaneously by using a `@UsingSchema(storeName?, schematic)` decorator on a Controller class.
+The API design is heavily inspired by the **NestJS framework**. Consequently, developers can easily migrate their mock controller code directly into a real NestJS backend without having to rewrite significant portions of the API.
+
+## Ideal Use Cases
+- Small demo apps that do not require a fully functional backend yet.
+- Recruitment tasks or homework assignments.
+- Real-time portfolio applications.
+
+## Warnings
+*Do not use this library for production applications.* It operates purely as a frontend interceptor and is not a secure, functional backend server.
+Some class or interface names within this library are identical to Angular's names. It is strongly advised to separate these mock classes into their own files/directories away from regular Angular components or services to avoid `import` naming conflicts.
+
+## Installation
+`npm install ngx-api-mimic`

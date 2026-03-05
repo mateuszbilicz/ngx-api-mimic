@@ -7,7 +7,10 @@
 
 <p-menubar [model]="navigationEntries()" class="desktop-menu" #menu>
   <ng-template #start>
-    <span>NGX API Mimic</span>
+    <div class="flex gap-2 items-center pr-5 border-r-2 border-r-gray-500/20">
+      <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
+      <span>NGX API Mimic</span>
+    </div>
   </ng-template>
   <ng-template #item let-item>
     <a [id]="item.id"
@@ -30,8 +33,15 @@
   </ng-template>
 </p-menubar>
 
-<p-drawer [(visible)]="drawerVisible" header="NGX API Mimic">
-  <p-panelMenu [model]="navigationEntries()" [multiple]="true">
+<p-drawer [(visible)]="drawerVisible">
+  <ng-template #header>
+    <div class="flex gap-2 items-center">
+      <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
+      <span>NGX API Mimic</span>
+    </div>
+  </ng-template>
+  <p-panelMenu [model]="navigationEntries()"
+               [multiple]="true">
     <ng-template #item let-item>
       <div class="flex items-center justify-between w-full p-3 cursor-pointer" (click)="onEntryClick(item, $event)">
         <div class="flex items-center">

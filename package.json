@@ -5,6 +5,7 @@
     "name": "Mateusz Bilicz",
     "url": "https://mateuszbilicz.pl/"
   },
+  "repository": "https://github.com/mateuszbilicz/ngx-api-mimic",
   "keywords": [
     "Angular",
     "API Mock",

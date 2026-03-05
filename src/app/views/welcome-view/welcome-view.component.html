@@ -1,1 +1,73 @@
-<p>welcome-view works!</p>
+<div class="welcome-container flex flex-col items-center justify-center p-4 min-h-screen">
+    <p-card class="welcome-card w-full max-w-4xl p-4 sm:p-6 md:p-8 shadow-xl rounded-2xl">
+        <div class="flex flex-col items-center text-center gap-6 mb-8">
+            <div
+                class="lib-icon-container w-[7rem] h-[7rem] aspect-square rounded-2xl flex items-center justify-center overflow-hidden shadow-sm">
+                <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-full h-full object-cover">
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold m-0 p-0 text-color tracking-tight">
+                    {{ libName() }}
+                </h1>
+                <div class="flex items-center justify-center gap-3 mt-2 flex-wrap">
+                    <p-chip [label]="'v' + version()" icon="pi pi-tag" styleClass="text-sm font-semibold"></p-chip>
+                    <p-chip label="Angular 21" icon="pi pi-bolt" styleClass="text-sm font-semibold"></p-chip>
+                </div>
+            </div>
+
+            <p class="text-xl md:text-2xl text-color-secondary max-w-3xl font-normal leading-relaxed text-balance mt-4">
+                {{ description() }}
+            </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 w-full sm:w-auto">
+            <a [href]="githubUrl()" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto action-link">
+                <p-button label="GitHub Repository" icon="pi pi-github" [outlined]="false" severity="secondary"
+                    size="large" styleClass="w-full sm:w-auto font-semibold rounded-lg shadow-sm">
+                </p-button>
+            </a>
+            <a href="/docs" rel="noopener noreferrer"
+                class="w-full sm:w-auto action-link">
+                <p-button label="Documentation" icon="pi pi-book" size="large"
+                    styleClass="w-full sm:w-auto font-semibold rounded-lg shadow-sm">
+                </p-button>
+            </a>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="my-8">
+            <h2 class="text-3xl font-bold text-color mb-6 text-center md:text-left">What's Inside</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @for (feature of features(); track feature) {
+                <div class="feature-item p-5 rounded-xl flex items-start gap-4">
+                    <i class="pi pi-check-circle text-primary text-2xl mt-0.5"></i>
+                    <span class="text-color text-lg leading-snug">{{ feature }}</span>
+                </div>
+                } @empty {
+                <div class="text-color-secondary italic p-4 text-center w-full">No features listed.</div>
+                }
+            </div>
+        </div>
+
+        <p-divider></p-divider>
+
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-between text-color-secondary gap-4">
+            <div class="flex items-center gap-2">
+                <span class="font-medium text-lg">Created by {{ authorName() }}</span>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a [href]="authorGithubUrl()" target="_blank" rel="noopener noreferrer"
+                    class="text-color-secondary transition-colors author-link hover:text-primary" title="GitHub">
+                    <i class="pi pi-github text-3xl"></i>
+                </a>
+                <a [href]="authorUrl()" target="_blank" rel="noopener noreferrer"
+                    class="text-color-secondary transition-colors author-link hover:text-primary" title="Portfolio">
+                    <i class="pi pi-globe text-3xl"></i>
+                </a>
+            </div>
+        </div>
+    </p-card>
+</div>

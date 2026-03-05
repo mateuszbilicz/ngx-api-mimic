@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ngx-api-mock.mateuszbilicz.pl/sitemap.xml
