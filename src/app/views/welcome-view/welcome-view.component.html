@@ -27,8 +27,7 @@
                     size="large" styleClass="w-full sm:w-auto font-semibold rounded-lg shadow-sm">
                 </p-button>
             </a>
-            <a href="/docs" rel="noopener noreferrer"
-                class="w-full sm:w-auto action-link">
+            <a [routerLink]="['/docs']" rel="noopener noreferrer" class="w-full sm:w-auto action-link">
                 <p-button label="Documentation" icon="pi pi-book" size="large"
                     styleClass="w-full sm:w-auto font-semibold rounded-lg shadow-sm">
                 </p-button>
@@ -59,13 +58,18 @@
             </div>
 
             <div class="flex items-center gap-4">
+                <a href="https://www.buymeacoffee.com/fridgehunter" target="_blank" rel="noopener noreferrer"
+                    title="Buy Me A Coffee" class="transition-transform hover:scale-105 flex items-center shrink-0">
+                    <img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png"
+                        alt="Buy Me A Coffee" class="h-8 md:h-9 object-contain">
+                </a>
                 <a [href]="authorGithubUrl()" target="_blank" rel="noopener noreferrer"
                     class="text-color-secondary transition-colors author-link hover:text-primary" title="GitHub">
-                    <i class="pi pi-github text-3xl"></i>
+                    <i class="pi pi-github text-2xl!"></i>
                 </a>
                 <a [href]="authorUrl()" target="_blank" rel="noopener noreferrer"
                     class="text-color-secondary transition-colors author-link hover:text-primary" title="Portfolio">
-                    <i class="pi pi-globe text-3xl"></i>
+                    <i class="pi pi-globe text-2xl!"></i>
                 </a>
             </div>
         </div>

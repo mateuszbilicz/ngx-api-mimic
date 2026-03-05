@@ -10,3 +10,15 @@ html, body {
 body {
   font-family: 'Arial', sans-serif;
 }
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+}
+
+h3 {
+  margin-top: .5rem;
+}
+
+h4 {
+  margin-top: .25rem;
+}

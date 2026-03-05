@@ -1,0 +1,7 @@
+:host {
+  cursor: copy;
+
+  &:hover {
+    opacity: .8;
+  }
+}

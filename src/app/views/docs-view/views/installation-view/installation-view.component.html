@@ -1,1 +1,49 @@
-<p>installation-view works!</p>
+<app-doc-page name="Installing ngx-api-mimic">
+  <p>
+    You can install ngx-api-mimic from NPM by using <app-command command="npm install ngx-api-mimic"/> command.
+  </p>
+
+  <p class="mb-3">
+    After installing ngx-api-mimic you can use data mock or API mock.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <a [routerLink]="['/docs/data-mock']"
+       class="group flex items-center gap-4 p-3 rounded-none border border-surface bg-surface hover:border-primary/50 transition-all shadow-sm hover:shadow-md no-underline">
+      <div
+        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+        <i class="pi pi-database text-primary text-xl"></i>
+      </div>
+      <div>
+          <span class="block text-lg font-semibold text-color group-hover:text-primary transition-colors mb-0.5">Data
+            Mock</span>
+        <span class="block text-sm text-color-secondary leading-tight">Generate schema-based data</span>
+      </div>
+    </a>
+
+    <a [routerLink]="['/docs/api-mock']"
+       class="group flex items-center gap-4 p-3 rounded-none border border-surface bg-surface hover:border-primary/50 transition-all shadow-sm hover:shadow-md no-underline">
+      <div
+        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+        <i class="pi pi-server text-primary text-xl"></i>
+      </div>
+      <div>
+          <span class="block text-lg font-semibold text-color group-hover:text-primary transition-colors mb-0.5">API
+            Mock</span>
+        <span class="block text-sm text-color-secondary leading-tight">Mock the REST controllers</span>
+      </div>
+    </a>
+
+    <a [routerLink]="['/docs/examples']"
+       class="group flex items-center gap-4 p-3 rounded-none border border-surface bg-surface hover:border-primary/50 transition-all shadow-sm hover:shadow-md no-underline">
+      <div
+        class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors shrink-0">
+        <i class="pi pi-code text-primary text-xl"></i>
+      </div>
+      <div>
+        <span class="block text-lg font-semibold text-color group-hover:text-primary transition-colors mb-0.5">Examples</span>
+        <span class="block text-sm text-color-secondary leading-tight">See everything in action</span>
+      </div>
+    </a>
+  </div>
+</app-doc-page>
