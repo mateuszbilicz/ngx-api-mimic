@@ -5,6 +5,7 @@ export const routes: NamedRoutes = [
     path: '',
     data: {
       name: 'Welcome',
+      icon: 'pi pi-home',
     },
     loadComponent: () =>
       import('./views/welcome-view/welcome-view.component').then((v) => v.WelcomeViewComponent),
@@ -13,10 +14,20 @@ export const routes: NamedRoutes = [
     path: 'docs',
     data: {
       name: 'Documentation',
+      icon: 'pi pi-file',
     },
     loadComponent: () =>
       import('./views/docs-view/docs-view.component').then((v) => v.DocsViewComponent),
     loadChildren: () => import('./views/docs-view/docs-view.routes').then((v) => v.docsViewRoutes),
+  },
+  {
+    path: 'credits',
+    data: {
+      name: 'Credits',
+      icon: 'pi pi-heart',
+    },
+    loadComponent: () =>
+      import('./views/credits-view/credits-view.component').then((v) => v.CreditsViewComponent),
   },
   {
     path: '**',

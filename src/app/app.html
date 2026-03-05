@@ -1,24 +1,8 @@
-<!--
-<app-doc-page name="Test DOCS page!">
-  <app-doc-tabs [codeTemplate]="code"
-                [previewTemplate]="example"/>
-</app-doc-page>
-
-<ng-template #example>
-  <p>
-    Example...
-  </p>
-</ng-template>
-
-<ng-template #code>
-  <app-code-viewer filename="test.ts"
-                   code="console.log('aaaa')"/>
-</ng-template>
--->
-<div class="flex sm:flex-col overflow-x-auto justify-start items-center sm:items-start">
+<div class="flex sm:flex-col justify-start items-center sm:items-start fixed top-0 left-0 w-full z-10"
+     [style.background]="'var(--p-breadcrumb-background)'">
   <app-navigation/>
   <app-breadcrumb-navigation/>
 </div>
-<div class="p-2 w-full">
+<div class="p-2 w-full mt-10 sm:mt-27">
   <router-outlet/>
 </div>

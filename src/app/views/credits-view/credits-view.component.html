@@ -1,0 +1,101 @@
+<div class="credits-container flex flex-col items-center justify-center p-4 min-h-screen">
+    <p-card class="credits-card w-full max-w-4xl p-4 sm:p-6 md:p-8 shadow-xl rounded-2xl">
+        <div class="flex flex-col items-center text-center gap-6 mb-8">
+            <div class="flex flex-col gap-3">
+                <i class="pi pi-heart-fill text-6xl! text-red-700 text-primary mb-2 mx-auto drop-shadow-sm"></i>
+                <h1 class="text-4xl md:text-5xl lg:text-5xl font-extrabold m-0 p-0 text-color tracking-tight">
+                    Thank You!
+                </h1>
+                <p
+                    class="text-xl md:text-2xl text-color-secondary max-w-3xl font-normal leading-relaxed text-balance mt-4">
+                    This library was built with the help, inspiration, and resources of awesome people from the
+                    open-source community.
+                </p>
+            </div>
+        </div>
+
+        <p-divider align="center">
+            <span class="text-2xl font-semibold text-color mx-4">Contributors</span>
+        </p-divider>
+
+        <div class="my-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                @for (contributorId of contributorsUsernames(); track contributorId) {
+                @if (contributors()[contributorId]; as contributor) {
+                <a [href]="contributor.url" target="_blank" rel="noopener noreferrer"
+                    class="flex flex-col items-center p-6 rounded-2xl border border-solid border-black/5 dark:border-white/5 hover:border-black/10 dark:hover:border-white/10 hover:shadow-xl transition-all hover:-translate-y-1 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 no-underline group outline-none">
+                    <p-avatar [image]="contributor.avatarUrl" size="xlarge" shape="circle"
+                        styleClass="w-[7rem] h-[7rem] mb-4 shadow-md border-4 border-solid border-white dark:border-surface-800 transition-transform group-hover:scale-105"></p-avatar>
+                    <span class="text-xl font-bold text-color text-center">{{ contributor.name || contributorId
+                        }}</span>
+                    <span class="text-color-secondary mt-1 font-medium">&#64;{{ contributorId }}</span>
+                </a>
+                }
+                } @empty {
+                <div class="col-span-full flex flex-col items-center justify-center p-8 gap-4">
+                    <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+                    <span class="text-color-secondary italic text-lg">Loading contributors...</span>
+                </div>
+                }
+            </div>
+        </div>
+
+        <p-divider align="center">
+            <span class="text-2xl font-semibold text-color mx-4">Gists &amp; Resources</span>
+        </p-divider>
+
+        <div class="my-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @for (gist of gists(); track gist.name) {
+                <a [href]="gist.url" target="_blank" rel="noopener noreferrer"
+                    class="flex flex-col p-6 rounded-2xl border border-solid border-black/10 dark:border-white/10 hover:shadow-lg hover:-translate-y-1 transition-all hover:border-black/20 dark:hover:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 no-underline bg-transparent h-full group outline-none">
+                    <div class="flex items-center justify-between mb-4">
+                        <div
+                            class="w-12 h-12 rounded-full bg-black/5 dark:bg-white/5 text-color flex items-center justify-center transition-colors group-hover:bg-primary group-hover:text-primary-contrast">
+                            <i class="pi pi-code text-2xl"></i>
+                        </div>
+                        <i
+                            class="pi pi-external-link text-color-secondary group-hover:text-color transition-colors"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-color m-0 mb-3 truncate" [title]="gist.name">{{ gist.name }}</h3>
+                    <p class="text-color-secondary m-0 mb-6 grow leading-relaxed">{{ gist.description }}</p>
+                    <div
+                        class="flex items-center gap-2 pt-4 mt-auto border-t border-solid border-black/5 dark:border-white/5">
+                        <span
+                            class="text-sm text-color-secondary group-hover:text-color transition-colors">Author:</span>
+                        <span class="font-semibold text-color group-hover:underline">{{ gist.author.name }}</span>
+                    </div>
+                </a>
+                }
+            </div>
+        </div>
+
+        <p-divider align="center">
+            <span class="text-2xl font-semibold text-color mx-4">Special Mentions</span>
+        </p-divider>
+
+        <div class="mt-8">
+            <div class="grid grid-cols-1 gap-6">
+                @for (other of others(); track other.name) {
+                <div
+                    class="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 rounded-2xl border border-solid border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
+                    <div class="w-24 h-24 shrink-0 flex items-center justify-center bg-white rounded-2xl shadow-sm p-3">
+                        <img [src]="other.icon" [alt]="other.name" class="w-full h-full object-contain">
+                    </div>
+                    <div class="grow text-center sm:text-left flex flex-col justify-center h-full">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                            <h3 class="text-2xl font-bold text-color m-0">{{ other.name }}</h3>
+                            <a [href]="other.url" target="_blank" rel="noopener noreferrer">
+                                <p-button label="Visit Website" icon="pi pi-external-link" size="small"
+                                    [outlined]="true" styleClass="rounded-lg shadow-sm font-semibold"></p-button>
+                            </a>
+                        </div>
+                        <p class="text-lg text-color-secondary m-0 leading-relaxed max-w-2xl">{{ other.description }}
+                        </p>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </p-card>
+</div>

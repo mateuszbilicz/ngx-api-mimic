@@ -22,4 +22,34 @@ export const docsViewRoutes: NamedRoutes = [
         (v) => v.InstallationViewComponent,
       ),
   },
+  {
+    path: 'data-mock',
+    data: {
+      name: 'Data Mock',
+    },
+    loadComponent: () =>
+      import('./views/data-mock-view/data-mock-view.component').then(
+        (v) => v.DataMockViewComponent,
+      ),
+  },
+  {
+    path: 'api-mock',
+    data: {
+      name: 'API Mock',
+    },
+    loadComponent: () =>
+      import('./views/api-mock-view/api-mock-view.component').then(
+        (v) => v.ApiMockViewComponent,
+      ),
+  },
+  {
+    path: 'examples',
+    data: {
+      name: 'Examples',
+    },
+    loadComponent: () =>
+      import('./views/examples-view/examples-view.component').then(
+        (v) => v.ExamplesViewComponent,
+      ),
+  },
 ];
