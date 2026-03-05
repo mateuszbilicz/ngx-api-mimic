@@ -1,0 +1,79 @@
+<p-button [label]="asFloatingButton() ? undefined : 'Show console'"
+          icon="pi pi-code"
+          [rounded]="asFloatingButton()"
+          [raised]="asFloatingButton()"
+          [text]="!asFloatingButton()"
+          [size]="asFloatingButton() ? undefined : 'small'"
+          severity="info"
+          [pTooltip]="asFloatingButton() ? 'Show console' : undefined"
+          [class]="buttonClasses()"
+          (onClick)="drawerVisible.set(true)"/>
+
+<p-drawer position="right"
+          header="Console"
+          [style]="{width: 'min(35rem, 100vw)'}"
+          [(visible)]="drawerVisible">
+  <div class="flex flex-col gap-1 w-full">
+    <div class="flex gap-2 justify-between items-center">
+      <p-multiSelect [options]="consoleLogSupportedTypes"
+                     #self
+                     [(ngModel)]="selectedTypesFilter"
+                     optionLabel="value"
+                     optionValue="value"
+                     [filter]="false"
+                     size="small"/>
+      <p-button icon="pi pi-trash"
+                label="Clear"
+                severity="danger"
+                text
+                (onClick)="clear()"/>
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+      @if (logs().length === 0) {
+        <div class="flex items-center justify-center p-5 text-gray-500">
+          <span>No console items</span>
+        </div>
+      }
+      @for (log of logs(); track log.uid) {
+        <div class="flex flex-col overflow-x-auto pl-2"
+             [style]="{
+              'border-left': 'solid 2px ' + log.color
+             }">
+          <div class="flex gap-2 w-full">
+            <div class="flex flex-wrap gap-1 grow">
+            <span class="text-gray-500">
+              {{ log.time | date:'HH:mm:ss.S' }}
+            </span>
+              @for (displayTextPart of log.displayText; track displayTextPart; let index = $index) {
+                <span [style]="log.styles[index]">
+                  {{ displayTextPart }}
+                </span>
+              }
+            </div>
+          </div>
+          @if (log.expandText) {
+            <p-inplace class="pl-3">
+              <ng-template #display>
+                <span class="text-gray-500 text-sm">
+                  <i class="pi pi-plus mr-1 text-xs!"></i>
+                  Expand
+                </span>
+              </ng-template>
+              <ng-template #content
+                           let-closeCallback="closeCallback">
+                <div class="flex gap-1 w-full">
+                  <pre>{{ log.expandText }}</pre>
+                  <p-button icon="pi pi-times"
+                            severity="secondary"
+                            text
+                            size="small"
+                            (onClick)="closeCallback($event)"/>
+                </div>
+              </ng-template>
+            </p-inplace>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</p-drawer>

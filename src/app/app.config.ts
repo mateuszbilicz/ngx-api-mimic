@@ -18,9 +18,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       ripple: true,
       inputVariant: 'outlined',
-      overlayOptions: {
-        mode: 'modal'
-      },
       overlayAppendTo: 'body',
       theme: {
         preset: Nora,
