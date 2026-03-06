@@ -29,14 +29,22 @@
       }
     </a>
   </ng-template>
+  <ng-template #end>
+    <div class="flex items-center">
+      <p-button icon="pi pi-search" pTooltip="Global search" [text]="true" (onClick)="searchVisible.set(true)" />
+    </div>
+  </ng-template>
 </p-menubar>
 
 <p-drawer [(visible)]="drawerVisible">
   <ng-template #header>
-    <a routerLink="/" (click)="drawerVisible.set(false)" class="flex gap-2 items-center text-inherit no-underline">
-      <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
-      <span class="font-semibold text-lg hover:text-primary transition-colors">NGX API Mimic</span>
-    </a>
+    <div class="flex items-center justify-between w-full pr-4">
+      <a routerLink="/" (click)="drawerVisible.set(false)" class="flex gap-2 items-center text-inherit no-underline">
+        <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
+        <span class="font-semibold text-lg hover:text-primary transition-colors">NGX API Mimic</span>
+      </a>
+      <p-button icon="pi pi-search" [rounded]="true" [text]="true" (onClick)="searchVisible.set(true)" />
+    </div>
   </ng-template>
   <p-panelMenu [model]="navigationEntries()" [multiple]="true">
     <ng-template #item let-item>
@@ -63,3 +71,5 @@
     </ng-template>
   </p-panelMenu>
 </p-drawer>
+
+<app-search-dialog [(visible)]="searchVisible" />

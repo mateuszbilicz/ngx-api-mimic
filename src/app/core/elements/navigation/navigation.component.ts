@@ -16,11 +16,13 @@ import { Button } from 'primeng/button';
 import { Menubar } from 'primeng/menubar';
 import { NamedRoutes } from '../../api/named-route';
 import { NavigationEntry } from '../../api/navigation-entry';
+import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [PanelMenu, Drawer, Button, Menubar, RouterLink],
+  imports: [PanelMenu, Drawer, Button, Menubar, RouterLink, SearchDialogComponent, Tooltip],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,6 +33,7 @@ export class NavigationComponent implements OnInit {
   private menuComponent = viewChild<Menubar>('menu');
 
   drawerVisible = signal<boolean>(false);
+  searchVisible = signal<boolean>(false);
   navigationEntries = signal<NavigationEntry[]>([]);
   private expandSubject = new Subject<{ entry: NavigationEntry; expand: boolean }>();
 
@@ -41,6 +44,11 @@ export class NavigationComponent implements OnInit {
   ngOnInit() {
     const rootRoutes = this.router.config as NamedRoutes;
     this.navigationEntries.set(this.mapNavigationEntries(rootRoutes));
+
+    // Close drawer when navigating from search or external link
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.drawerVisible.set(false);
+    });
   }
 
   private initLoadingPipeline() {

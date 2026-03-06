@@ -1,0 +1,50 @@
+<p-dialog [(visible)]="visible" [modal]="true" header="Global search" [style]="{ width: '40rem' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '95vw' }" (onHide)="cancelSearch()" [dismissableMask]="true">
+    <div class="flex flex-col h-full overflow-hidden">
+        <div class="flex gap-2">
+            <input pInputText type="text" pSize="large" [(ngModel)]="searchText" class="flex-1"
+                placeholder="Search documentation, examples..." (input)="onInputTextChange()" [disabled]="loading()"
+                (keydown.enter)="triggerSearch()" autofocus />
+            <p-button icon="pi pi-search" (onClick)="triggerSearch()" [loading]="loading()"/>
+        </div>
+
+        @if (hasSearched() && !loading() && results().length === 0) {
+        <div class="my-6 text-center text-gray-500">
+            <i class="pi pi-inbox text-4xl mb-2"></i>
+            <div class="text-xl">No results found</div>
+        </div>
+        }
+
+        @if (results().length > 0) {
+        <div class="mt-4 flex flex-col gap-3 overflow-y-auto pr-1" style="max-height: 50vh;">
+            @for (item of results(); track item.title + item.matchedIn + item.routerLink.join('/')) {
+            <div class="p-4 border border-surface rounded bg-surface-50 hover:bg-surface-100 dark:bg-surface-800 dark:hover:bg-surface-700 transition cursor-pointer flex flex-col gap-2 relative group"
+                (click)="goToResult(item.routerLink)">
+
+                <div class="flex items-center gap-2">
+                    <i [class]="item.icon + ' text-xl'"></i>
+                    <span class="font-bold text-lg text-primary">{{ item.title }}</span>
+                </div>
+
+                <div class="text-sm">
+                    <span class="text-surface-500 font-semibold uppercase text-xs">Matched in: </span>
+                    <span class="bg-primary/10 text-primary-500 px-2 py-0.5 rounded text-xs ml-1">{{ item.matchedIn
+                        }}</span>
+                </div>
+
+                @if (item.snippet) {
+                <div
+                    class="text-sm text-surface-600 dark:text-surface-400 font-mono bg-surface-200 dark:bg-surface-900 p-2 rounded truncate mt-1">
+                    {{ item.snippet }}
+                </div>
+                }
+
+                <p-button icon="pi pi-arrow-right" [text]="true" [rounded]="true"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition"
+                    (onClick)="goToResult(item.routerLink)"></p-button>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</p-dialog>
