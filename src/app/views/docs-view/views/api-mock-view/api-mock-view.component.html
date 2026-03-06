@@ -1,5 +1,5 @@
 <app-doc-page name="API Mock">
-  <p class="text-justify">
+  <p class="text-justify mb-4">
     API Mock gives you all you need to mock API inside Angular app.
     From interceptor that redirects HTTP requests to functions inside the app,
     router that manages routing between controllers,
@@ -9,8 +9,15 @@
     which makes it easier when you have Angular app with mock and you want to create API
     - you just copy-paste this code and write what's really inside.
   </p>
-  <app-description-tree [branch]="classTree()" />
-  <app-description-tree [branch]="decoratorsTree()" />
-  <app-description-tree [branch]="pipesTree()" />
-  <app-description-tree [branch]="typesAndInterfacesTree()" />
+  <div class="mb-4">
+    <p-iconfield>
+      <p-inputicon class="pi pi-search"></p-inputicon>
+      <input type="text" pInputText placeholder="Search API docs..." [value]="searchQuery()" (input)="onSearch($event)"
+        class="w-full" />
+    </p-iconfield>
+  </div>
+  <app-description-tree [branch]="classTree()" [forceExpand]="forceExpand()" />
+  <app-description-tree [branch]="decoratorsTree()" [forceExpand]="forceExpand()" />
+  <app-description-tree [branch]="pipesTree()" [forceExpand]="forceExpand()" />
+  <app-description-tree [branch]="typesAndInterfacesTree()" [forceExpand]="forceExpand()" />
 </app-doc-page>

@@ -12,13 +12,16 @@ import { RouterLink } from '@angular/router';
 })
 export class DescriptionTreeComponent {
   branch = input.required<DescriptionTreeBranch>();
+  forceExpand = input<boolean>(false);
   title = computed(() => this.branch().title);
   icon = computed(() => this.branch().icon);
   description = computed(() => this.branch().description);
   url = computed(() => this.branch().url);
   items = computed(() => this.branch().items);
   expanded = signal(false);
-  expandIcon = computed(() => (this.expanded() ? 'chevron-down' : 'chevron-right'));
+
+  isExpanded = computed(() => this.expanded() || this.forceExpand());
+  expandIcon = computed(() => (this.isExpanded() ? 'chevron-down' : 'chevron-right'));
 
   toggle() {
     this.expanded.set(!this.expanded());
