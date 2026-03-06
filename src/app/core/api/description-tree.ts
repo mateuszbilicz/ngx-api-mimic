@@ -10,3 +10,4 @@ export const DescriptionTreeIconType = 'pi pi-hashtag text-blue-400';
 export const DescriptionTreeIconInterface = 'pi pi-book text-orange-500';
 export const DescriptionTreeIconClass = 'pi pi-box text-orange-700';
 export const DescriptionTreeIconMethod = 'pi pi-hammer text-blue-600';
+export const DescriptionTreeIconDecorator = 'pi pi-align-left text-violet-600';
