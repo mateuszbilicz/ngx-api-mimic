@@ -140,7 +140,10 @@ export interface MixedBasic_UserList {
   totalCount: number;
 }`;
 
-  classCode = `@Controller('users')
+  classCode = `import { Controller, UsingSchema, Get, Query, ParseIntPipe, UrlParam, Post, Body, Put, Delete } from 'ngx-api-mimic';
+import { MixedBasic_UserList, MixedBasic_UserCreate } from './mixed-basic-example';
+
+@Controller('users')
 @UsingSchema<MixedBasic_UserList>('users', {
   type: 'object',
   items: {
@@ -253,7 +256,10 @@ class UsersController {
   }
 }`;
 
-  routerCode = `const router = ngxApiMimicRouterFactory([UsersController]);
+  routerCode = `import { ngxApiMimicRouterFactory, ngxApiMockInterceptorFactory } from 'ngx-api-mimic';
+import { UsersController } from './mixed-basic-example';
+
+const router = ngxApiMimicRouterFactory([UsersController]);
 router.usePrefix('mixed-basic-example');
 export const mixedBasicExampleInterceptor = ngxApiMockInterceptorFactory(router);`;
 }

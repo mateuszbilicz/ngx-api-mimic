@@ -1,0 +1,44 @@
+<app-doc-page name="API Mock Basic Example">
+    <p>
+        This basic example demonstrates how to create a simple controller and maintain a primitive state directly within
+        the class properties.
+    </p>
+    <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
+</app-doc-page>
+
+<ng-template #codeTemplate>
+    <h3>Class code</h3>
+    <p>
+        At the core of our mock setup lies the controller class marked with the <code>{{ '@Controller' }}</code>
+        decorator. Built on straightforward architectural patterns, it implements core endpoints via
+        routing decorators such as <code>{{ '@Get' }}</code> and <code>{{ '@Post' }}</code>. State management
+        is maintained natively via private class properties like the demonstrated counter.
+    </p>
+    <app-code-viewer filename="api-mock-basic-example.ts" [code]="classCode" height="32rem" />
+
+    <h3>Router and interceptor</h3>
+    <p>
+        To complete the lifecycle, the controller is wrapped within a mock router. Utilizing
+        <code>ngxApiMimicRouterFactory</code> alongside a unique <code>usePrefix</code> isolates
+        these API calls, effectively bridging Angular's backend proxy mapping.
+    </p>
+    <app-code-viewer filename="api-mock-basic-example.ts" [code]="routerCode" height="12rem" />
+</ng-template>
+
+<ng-template #previewTemplate>
+    <app-console-preview />
+    <div class="flex gap-4 mb-4">
+        <p-button label="Ping API" (onClick)="ping()" />
+        <p-button label="Get Count" severity="info" (onClick)="getCount()" />
+        <p-button label="Increment (+1)" severity="success" (onClick)="incrementCount()" />
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+        <p-panel header="Ping Result">
+            <pre class="overflow-auto text-xs">{{ pingResult() | json }}</pre>
+        </p-panel>
+        <p-panel header="Count State">
+            <pre class="overflow-auto text-xs">{{ countResult() | json }}</pre>
+        </p-panel>
+    </div>
+</ng-template>

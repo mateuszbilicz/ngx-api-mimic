@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, linkedSignal, model, signal } from '@angular/core';
-import {Button} from "primeng/button";
-import {CodeViewerComponent} from "../../../../../../core/elements/code-viewer/code-viewer.component";
+import { Button } from "primeng/button";
+import { CodeViewerComponent } from "../../../../../../core/elements/code-viewer/code-viewer.component";
 import { ConsolePreviewComponent } from '../../../../../../core/elements/console-preview/console-preview/console-preview.component';
-import {DocPageComponent} from "../../../../../../core/elements/doc-page/doc-page.component";
-import {DocTabsComponent} from "../../../../../../core/elements/doc-tabs/doc-tabs.component";
-import {FormsModule} from "@angular/forms";
-import {InputText} from "primeng/inputtext";
-import {Panel} from "primeng/panel";
-import {TableModule} from "primeng/table";
+import { DocPageComponent } from "../../../../../../core/elements/doc-page/doc-page.component";
+import { DocTabsComponent } from "../../../../../../core/elements/doc-tabs/doc-tabs.component";
+import { FormsModule } from "@angular/forms";
+import { InputText } from "primeng/inputtext";
+import { Panel } from "primeng/panel";
+import { TableModule } from "primeng/table";
 import { MixedBasic_User, MixedBasic_UserCreate } from '../../../../../../examples/mixed-basic-example';
 import { form, FormField, required } from '@angular/forms/signals';
 import { combineLatest, debounceTime, startWith, Subject, switchMap, tap } from 'rxjs';
@@ -137,7 +137,10 @@ interface MixedAdvanced_UserList {
   totalCount: number;
 }`;
 
-  pipeCode = `/** Checks if password inside MixedAdvanced_UserCreate is valid */
+  pipeCode = `import { PipeTransform, ArgumentMetadata, NgxApiMimicException } from 'ngx-api-mimic';
+import { MixedAdvanced_UserCreate } from './mixed-advanced-example';
+
+/** Checks if password inside MixedAdvanced_UserCreate is valid */
 export class BodyPasswordPipe implements PipeTransform<MixedAdvanced_UserCreate, MixedAdvanced_UserCreate> {
   transform(value: MixedAdvanced_UserCreate, metadata: ArgumentMetadata): MixedAdvanced_UserCreate {
     const {password} = value;
@@ -163,7 +166,9 @@ export class BodyPasswordPipe implements PipeTransform<MixedAdvanced_UserCreate,
   }
 }`;
 
-  guardCode = `class MixedAdvanced_AuthGuard implements CanActivate {
+  guardCode = `import { CanActivate, NgxApiMimicExecutionContext, NgxApiMimicException } from 'ngx-api-mimic';
+
+export class MixedAdvanced_AuthGuard implements CanActivate {
   canActivate(context: NgxApiMimicExecutionContext): boolean {
     const request = context.getRequest();
     const authHeader = request.headers.get('Authorization');
@@ -176,7 +181,10 @@ export class BodyPasswordPipe implements PipeTransform<MixedAdvanced_UserCreate,
   }
 }`;
 
-  classCode = `@Controller('users')
+  classCode = `import { Controller, UseGuards, UsingSchema, Get, Query, ParseIntPipe, UrlParam, Post, Body, Put, Delete } from 'ngx-api-mimic';
+import { MixedAdvanced_UserList, MixedAdvanced_UserCreate, BodyPasswordPipe, MixedAdvanced_AuthGuard, UserRoles } from './mixed-advanced-example';
+
+@Controller('users')
 @UseGuards(MixedAdvanced_AuthGuard)
 @UsingSchema<MixedAdvanced_UserList>('users-advanced', {
   type: 'object',
@@ -300,7 +308,10 @@ class UsersController {
   }
 }`;
 
-  routerCode = `const router = ngxApiMimicRouterFactory([UsersController]);
+  routerCode = `import { ngxApiMimicRouterFactory, ngxApiMockInterceptorFactory } from 'ngx-api-mimic';
+import { UsersController } from './mixed-advanced-example';
+
+const router = ngxApiMimicRouterFactory([UsersController]);
 router.usePrefix('mixed-advanced-example');
 export const mixedAdvancedExampleInterceptor = ngxApiMockInterceptorFactory(router);`;
 }

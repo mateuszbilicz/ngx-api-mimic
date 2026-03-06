@@ -2,76 +2,67 @@
   <p>
     This example contains controller class that mocks data.
   </p>
-  <app-doc-tabs [codeTemplate]="codeTemplate"
-                [previewTemplate]="previewTemplate"/>
+  <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
 </app-doc-page>
 
 <ng-template #codeTemplate>
   <h3>
     Interfaces used in this example
   </h3>
-  <app-code-viewer filename="mixed-advanced-example.ts"
-                   [code]="interfacesCode"
-                   height="27rem"/>
+  <p>
+    Strong typing facilitates clarity. This interface setup expands on primitive shapes to introduce constraints like
+    enumerations (<code>UserRoles</code>) and complex objects (<code>Date</code>).
+  </p>
+  <app-code-viewer filename="mixed-advanced-example.ts" [code]="interfacesCode" height="27rem" />
   <h3>
     Custom pipe
   </h3>
   <p>
-    You can create custom pipes that can modify and validate variables inside
-    endpoint params.
+    In <code>ngx-api-mimic</code>, Custom Pipes deliver an elegant mechanism to intercept and validate requests.
+    By applying <code>PipeTransform</code> upon incoming definitions, your backend mock ensures structural integrity
+    (for instance checking password strength) and raises unified <code>NgxApiMimicException</code> errors prior to
+    function execution.
   </p>
-  <app-code-viewer filename="mixed-advanced-example.ts"
-                   [code]="pipeCode"
-                   height="31rem"/>
+  <app-code-viewer filename="mixed-advanced-example.ts" [code]="pipeCode" height="31rem" />
   <h3>
     Custom guard
   </h3>
   <p>
-    In this example, we implemented MixedAdvanced_AuthGuard guard which checks, if token
-    inside Authorization header is equal to "test".
+    Guards natively restrict operation execution. <code>MixedAdvanced_AuthGuard</code> reads the authorization context
+    cleanly
+    from the execution loop and governs resource access based on the headers transmitted in the HTTP lifecycle.
   </p>
-  <app-code-viewer filename="mixed-advanced-example.ts"
-                   [code]="guardCode"
-                   height="15rem"/>
+  <app-code-viewer filename="mixed-advanced-example.ts" [code]="guardCode" height="15rem" />
   <h3>
     Class code
   </h3>
   <p>
-    In this class we're using {{ '@Controller' }} and {{ '@UsingSchema' }} decodators
-    to initialize controller and define mock schema.
-    Also, we've added {{ '@UseGuards' }} decorator to implement guards.
-    Inside POST /users (userCreate) we've added custom pipe BodyPasswordPipe to {{ '@Body' }} decorator.
-    Inside the class we're defining specific methods via functions and method decorators.
+    Bringing data seeding together with our advanced rules, <code>{{ '@UsingSchema' }}</code> handles sophisticated
+    types such as randomized dates
+    (<code>customFn</code>) or specific enums.
+    Coupled with declarative configurations like <code>{{ '@UseGuards' }}</code> or argument-level validators
+    (<code>{{ '@Body(BodyPasswordPipe)' }}</code>),
+    the class strictly ensures complete security and structural conformity.
   </p>
-  <app-code-viewer filename="mixed-advanced-example.ts"
-                   [code]="classCode"
-                   height="40rem"/>
+  <app-code-viewer filename="mixed-advanced-example.ts" [code]="classCode" height="40rem" />
   <h3>
     Router and interceptor
   </h3>
   <p>
-    We need to build router and create interceptor for our mock.
-    router.usePrefix is defined to distinct different example API routes.
+    We export the fully bound router as an interceptor bundle ready to intercept application wide asynchronous
+    operations via standard HTTP calls.
   </p>
-  <app-code-viewer filename="mixed-advanced-example.ts"
-                   [code]="routerCode"/>
+  <app-code-viewer filename="mixed-advanced-example.ts" [code]="routerCode" height="15rem" />
 </ng-template>
 
 <ng-template #previewTemplate>
-  <app-console-preview/>
+  <app-console-preview />
   <p-panel header="UI">
-    <input pInputText type="text" placeholder="Search" [(ngModel)]="filterText"/>
-    <p-table [value]="usersList()"
-             [loading]="usersLoading()"
-             [paginator]="true"
-             [rows]="10"
-             [totalRecords]="usersCount()"
-             [lazy]="true"
-             [rowsPerPageOptions]="undefined"
-             [showCurrentPageReport]="true"
-             (onPage)="this.setSkip($event.first)"
-             (onEditComplete)="updateUser($event.index, $event.field, $event.data)"
-             dataKey="id">
+    <input pInputText type="text" placeholder="Search" [(ngModel)]="filterText" />
+    <p-table [value]="usersList()" [loading]="usersLoading()" [paginator]="true" [rows]="10"
+      [totalRecords]="usersCount()" [lazy]="true" [rowsPerPageOptions]="undefined" [showCurrentPageReport]="true"
+      (onPage)="this.setSkip($event.first)" (onEditComplete)="updateUser($event.index, $event.field, $event.data)"
+      dataKey="id">
       <ng-template #header>
         <tr>
           <th>
@@ -120,9 +111,7 @@
         <tr>
           <td colspan="7">
             <div class="flex justify-end">
-              <p-button label="Create"
-                        [disabled]="newUserForm().invalid()"
-                        (onClick)="createUser()"/>
+              <p-button label="Create" [disabled]="newUserForm().invalid()" (onClick)="createUser()" />
             </div>
           </td>
         </tr>
@@ -132,7 +121,7 @@
           <td [pEditableColumn]="item.firstName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="firstName">
             <p-cellEditor>
               <ng-template #input>
-                <input pInputText type="text" [(ngModel)]="item.firstName" fluid/>
+                <input pInputText type="text" [(ngModel)]="item.firstName" fluid />
               </ng-template>
               <ng-template #output>
                 {{ item.firstName }}
@@ -142,7 +131,7 @@
           <td [pEditableColumn]="item.lastName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="lastName">
             <p-cellEditor>
               <ng-template #input>
-                <input pInputText type="text" [(ngModel)]="item.lastName" fluid/>
+                <input pInputText type="text" [(ngModel)]="item.lastName" fluid />
               </ng-template>
               <ng-template #output>
                 {{ item.lastName }}
@@ -152,7 +141,7 @@
           <td [pEditableColumn]="item.email" [pEditableColumnRowIndex]="item.id" pEditableColumnField="email">
             <p-cellEditor>
               <ng-template #input>
-                <input pInputText type="text" [(ngModel)]="item.email" fluid/>
+                <input pInputText type="text" [(ngModel)]="item.email" fluid />
               </ng-template>
               <ng-template #output>
                 {{ item.email }}
@@ -164,14 +153,16 @@
           </td>
           <td colspan="3">
             <div class="flex gap-1 justify-center items-center">
-              <p-button icon="pi pi-trash"
-                        text
-                        severity="danger"
-                        (onClick)="deleteUser(item.id)"/>
+              <p-button icon="pi pi-trash" text severity="danger" (onClick)="deleteUser(item.id)" />
             </div>
           </td>
         </tr>
       </ng-template>
     </p-table>
+    <div class="mt-4 text-xs text-surface-500">
+      <i class="pi pi-info-circle mr-1"></i> Edit inline by clicking on any of the data cells. Saving happens via
+      "ENTER" key logic within the editor. <strong>Delete</strong> is strictly guarded by AuthGuard mapping to user
+      role.
+    </div>
   </p-panel>
 </ng-template>

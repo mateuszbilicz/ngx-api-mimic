@@ -92,3 +92,30 @@ If you add a new category, remember to:
 2. Initialize an empty signal variable in the host `.component.ts`.
 3. Chain the `import()` promise in `ngOnInit`.
 4. Bind it using the signal getter syntax (`[branch]="newTree()"`) inside the `.component.html`.
+
+## Creating and Maintaining Examples (`src/app/views/docs-view/views/examples-view`)
+
+When touching existing or creating new examples, make sure they adhere to these visual and architectural standards established in the `ngx-api-mimic` documentation:
+
+### Code Separation
+
+Do **NOT** dump an entire `.ts` example file into a single `<app-code-viewer>`. Code should strictly be split into logical chunks within the respective component class using template literal variables:
+- `interfacesCode` - For Data Transfer Objects (DTOs) and types
+- `pipeCode` (If applicable) - For custom Pipes (e.g. `PipeTransform`)
+- `guardCode` (If applicable) - For Auth/Admin Guards (e.g. `CanActivate`)
+- `classCode` - The core Controller itself with methods (`@Get`, `@Post`, etc.)
+- `routerCode` - Router factory configuration and Interceptor exports
+
+**Crucial**: Add necessary imports at the top of these isolated strings as if they were standalone files (e.g., `import { Controller, Get } from 'ngx-api-mimic';`) so that viewers can directly copy-paste running code.
+
+### UI Guidelines
+
+In the component template (`.html`):
+1. Wrap each code string in an isolated `<app-code-viewer filename="..." [code]="chunkRef" />`.
+2. Every code viewer MUST be preceded by an `<h3>` heading and a `<p>` tag with a high-quality, professional technical description explaining WHAT the chunk does in the context of the library (e.g., explaining decorators like `@UsingSchema` or `@UseGuards`).
+3. Set appropriate `height="..."` attributes on `<app-code-viewer>` to avoid unneeded scrolling for short snippets (e.g. `height="12rem"`, `height="15rem"`), but maintain larger values (`height="40rem"`) for controllers to prevent stretching the page indefinitely.
+
+If modifying the UI preview of an example (the PrimeNG Table/Form):
+1. Stick to Tailwind neutral colors (`text-surface-500`, `bg-surface-100`, `dark:bg-surface-800`). Avoid dark text on dark backgrounds.
+2. Ensure PrimeNG forms leverage Signals via `@angular/forms/signals` (e.g., `newUserForm = form(...)`).
+3. Add a small text tip below the table (e.g., inline edit hint with text `Edit inline by clicking on any of the data cells. Saving happens via "ENTER" key...`) utilizing `<i class="pi pi-info-circle mr-1"></i>`.

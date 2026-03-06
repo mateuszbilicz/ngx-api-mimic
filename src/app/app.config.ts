@@ -9,6 +9,8 @@ import Nora from '@primeuix/themes/nora';
 import { BreadcrumbNavigationService } from './core/services/breadcrumb-navigation/breadcrumb-navigation.service';
 import { mixedBasicExampleInterceptor } from './examples/mixed-basic-example';
 import { mixedAdvancedExampleInterceptor } from './examples/mixed-advanced-example';
+import { apiMockBasicExampleInterceptor } from './examples/api-mock-basic-example';
+import { apiMockAdvancedExampleInterceptor } from './examples/api-mock-advanced-example';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +28,12 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([mixedBasicExampleInterceptor, mixedAdvancedExampleInterceptor]),
+      withInterceptors([
+        mixedBasicExampleInterceptor,
+        mixedAdvancedExampleInterceptor,
+        apiMockBasicExampleInterceptor,
+        apiMockAdvancedExampleInterceptor
+      ]),
     ),
     provideMonacoEditor(),
     BreadcrumbNavigationService,
