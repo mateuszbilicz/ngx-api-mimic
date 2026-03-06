@@ -24,7 +24,7 @@ This library is made for:
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
-## Current version (v0.0.8)
+## Current version (v0.0.9)
 
 You can use this version in your projects.
 Over next few days I'll be writing tests.
