@@ -2,7 +2,7 @@ import { Injectable, OnDestroy, signal } from '@angular/core';
 
 export const ConsoleLogSupportedTypes = ['log', 'error', 'warn'] as const;
 
-export type ConsoleLogSupportedType = typeof ConsoleLogSupportedTypes[number];
+export type ConsoleLogSupportedType = (typeof ConsoleLogSupportedTypes)[number];
 
 export interface ConsoleLog {
   type: ConsoleLogSupportedType;
@@ -29,9 +29,9 @@ export class ConsoleReaderService implements OnDestroy {
       this.addLog({
         type: 'log',
         time: new Date(),
-        data: data
+        data: data,
       });
-    }
+    };
 
     console.error = (...data: any[]) => {
       this.defaultConsoleError(...data);
@@ -40,7 +40,7 @@ export class ConsoleReaderService implements OnDestroy {
         time: new Date(),
         data: data,
       });
-    }
+    };
 
     console.warn = (...data: any[]) => {
       this.defaultConsoleWarn(...data);
@@ -49,11 +49,11 @@ export class ConsoleReaderService implements OnDestroy {
         time: new Date(),
         data: data,
       });
-    }
+    };
   }
 
   private addLog(log: ConsoleLog) {
-    this.logs.update(prev => ([...prev, log]));
+    this.logs.update((prev) => [...prev, log]);
   }
 
   clear() {

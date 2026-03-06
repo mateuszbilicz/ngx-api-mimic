@@ -1,20 +1,35 @@
-import { interfacesCode, pipeCode, guardCode, classCode, routerCode } from './examples-mixed-advanced-data';
-import { ChangeDetectionStrategy, Component, inject, linkedSignal, model, signal } from '@angular/core';
-import { Button } from "primeng/button";
-import { CodeViewerComponent } from "../../../../../../core/elements/code-viewer/code-viewer.component";
+import {
+  classCode,
+  guardCode,
+  interfacesCode,
+  pipeCode,
+  routerCode,
+} from './examples-mixed-advanced-data';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  linkedSignal,
+  model,
+  signal,
+} from '@angular/core';
+import { Button } from 'primeng/button';
+import { CodeViewerComponent } from '../../../../../../core/elements/code-viewer/code-viewer.component';
 import { ConsolePreviewComponent } from '../../../../../../core/elements/console-preview/console-preview/console-preview.component';
-import { DocPageComponent } from "../../../../../../core/elements/doc-page/doc-page.component";
-import { DocTabsComponent } from "../../../../../../core/elements/doc-tabs/doc-tabs.component";
-import { FormsModule } from "@angular/forms";
-import { InputText } from "primeng/inputtext";
-import { Panel } from "primeng/panel";
-import { TableModule } from "primeng/table";
-import { MixedBasic_User, MixedBasic_UserCreate } from '../../../../../../examples/mixed-basic-example';
+import { DocPageComponent } from '../../../../../../core/elements/doc-page/doc-page.component';
+import { DocTabsComponent } from '../../../../../../core/elements/doc-tabs/doc-tabs.component';
+import { FormsModule } from '@angular/forms';
+import { InputText } from 'primeng/inputtext';
+import { Panel } from 'primeng/panel';
+import { TableModule } from 'primeng/table';
+import {
+  MixedBasic_User,
+  MixedBasic_UserCreate,
+} from '../../../../../../examples/mixed-basic-example';
 import { form, FormField, required } from '@angular/forms/signals';
 import { combineLatest, debounceTime, startWith, Subject, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { MixedAdvancedExampleService } from '../../../../../../core/services/examples/mixed-advanced-example.service';
-import { BodyPasswordPipe } from '../../../../../../examples/mixed-advanced-example';
 
 @Component({
   selector: 'app-examples-mixed-advanced-view',

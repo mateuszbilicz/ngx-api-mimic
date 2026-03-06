@@ -8,8 +8,6 @@ export class AppTitleService {
   protected readonly title = inject(Title);
 
   setTitle(title: string): void {
-    this.title.setTitle(
-      'API Mimic | ' + title
-    );
+    this.title.setTitle('API Mimic | ' + title);
   }
 }

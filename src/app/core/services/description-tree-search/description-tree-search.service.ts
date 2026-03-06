@@ -29,7 +29,7 @@ export class DescriptionTreeSearchService {
       if (matchesSelf || validItems.length > 0) {
         return {
           ...node,
-          items: validItems.length > 0 ? validItems : (node.items ? undefined : undefined),
+          items: validItems.length > 0 ? validItems : node.items ? undefined : undefined,
         };
       }
 

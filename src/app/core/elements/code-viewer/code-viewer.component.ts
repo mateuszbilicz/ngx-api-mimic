@@ -13,7 +13,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
   imports: [EditorComponent, FormsModule, NgTemplateOutlet, Panel, Button],
   templateUrl: './code-viewer.component.html',
   styleUrl: './code-viewer.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CodeViewerComponent {
   protected readonly clipboard = inject(Clipboard);
@@ -33,21 +33,19 @@ export class CodeViewerComponent {
   }));
   hasFilename = computed(() => !!this.filename());
   editorHeight = computed(() =>
-    typeof this.height() === 'string'
-    ? this.height() : `${this.height()}px`
+    typeof this.height() === 'string' ? this.height() : `${this.height()}px`,
   );
   copyToClipboardResult$ = new BehaviorSubject<'success' | 'danger' | 'help'>('help');
-  copyToClipboardResultSeverity = toSignal(
-    this.copyToClipboardResult$
-  );
+  copyToClipboardResultSeverity = toSignal(this.copyToClipboardResult$);
 
   constructor() {
-    this.copyToClipboardResult$.pipe(
-      takeUntilDestroyed(),
-      filter(severity => severity !== 'help'),
-      shareReplay(1),
-      switchMap(() => timer(1250)),
-    )
+    this.copyToClipboardResult$
+      .pipe(
+        takeUntilDestroyed(),
+        filter((severity) => severity !== 'help'),
+        shareReplay(1),
+        switchMap(() => timer(1250)),
+      )
       .subscribe(() => this.copyToClipboardResult$.next('help'));
   }
 

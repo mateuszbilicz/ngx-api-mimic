@@ -7,9 +7,9 @@ import {
   ngxApiMockInterceptorFactory,
   Post,
   Put,
+  Query,
   UrlParam,
   UsingSchema,
-  Query
 } from 'ngx-api-mimic';
 
 export interface MixedBasic_UserCreate {

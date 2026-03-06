@@ -1,5 +1,5 @@
-import { inject, Injectable, signal, DestroyRef } from '@angular/core';
-import { NavigationEnd, Router, ActivatedRouteSnapshot } from '@angular/router';
+import { DestroyRef, inject, Injectable, signal } from '@angular/core';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MenuItem } from 'primeng/api';
 import { filter } from 'rxjs';

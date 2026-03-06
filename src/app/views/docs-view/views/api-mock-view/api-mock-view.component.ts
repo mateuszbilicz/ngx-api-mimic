@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs/operators';
 
@@ -24,10 +24,26 @@ export class ApiMockViewComponent implements OnInit {
   searchQuery = signal<string>('');
   forceExpand = signal<boolean>(false);
 
-  classTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
-  decoratorsTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
-  pipesTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
-  typesAndInterfacesTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
+  classTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
+  decoratorsTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
+  pipesTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
+  typesAndInterfacesTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
 
   private originalClassTree: DescriptionTreeBranch | null = null;
   private originalDecoratorsTree: DescriptionTreeBranch | null = null;
@@ -35,31 +51,39 @@ export class ApiMockViewComponent implements OnInit {
   private originalTypesTree: DescriptionTreeBranch | null = null;
 
   constructor() {
-    toObservable(this.searchQuery).pipe(
-      debounceTime(500)
-    ).subscribe(query => {
-      this.forceExpand.set(!!query);
-      if (this.originalClassTree) this.classTree.set(this.searchService.searchInTree(query, this.originalClassTree));
-      if (this.originalDecoratorsTree) this.decoratorsTree.set(this.searchService.searchInTree(query, this.originalDecoratorsTree));
-      if (this.originalPipesTree) this.pipesTree.set(this.searchService.searchInTree(query, this.originalPipesTree));
-      if (this.originalTypesTree) this.typesAndInterfacesTree.set(this.searchService.searchInTree(query, this.originalTypesTree));
-    });
+    toObservable(this.searchQuery)
+      .pipe(debounceTime(500))
+      .subscribe((query) => {
+        this.forceExpand.set(!!query);
+        if (this.originalClassTree)
+          this.classTree.set(this.searchService.searchInTree(query, this.originalClassTree));
+        if (this.originalDecoratorsTree)
+          this.decoratorsTree.set(
+            this.searchService.searchInTree(query, this.originalDecoratorsTree),
+          );
+        if (this.originalPipesTree)
+          this.pipesTree.set(this.searchService.searchInTree(query, this.originalPipesTree));
+        if (this.originalTypesTree)
+          this.typesAndInterfacesTree.set(
+            this.searchService.searchInTree(query, this.originalTypesTree),
+          );
+      });
   }
 
   ngOnInit() {
-    import('./api-mock-class.tree').then(t => {
+    import('./api-mock-class.tree').then((t) => {
       this.originalClassTree = t.apiMockClassTree;
       this.classTree.set(this.originalClassTree);
     });
-    import('./api-mock-decorators.tree').then(t => {
+    import('./api-mock-decorators.tree').then((t) => {
       this.originalDecoratorsTree = t.apiMockDecoratorsTree;
       this.decoratorsTree.set(this.originalDecoratorsTree);
     });
-    import('./api-mock-pipes.tree').then(t => {
+    import('./api-mock-pipes.tree').then((t) => {
       this.originalPipesTree = t.apiMockPipesTree;
       this.pipesTree.set(this.originalPipesTree);
     });
-    import('./api-mock-types.tree').then(t => {
+    import('./api-mock-types.tree').then((t) => {
       this.originalTypesTree = t.apiMockTypesTree;
       this.typesAndInterfacesTree.set(this.originalTypesTree);
     });

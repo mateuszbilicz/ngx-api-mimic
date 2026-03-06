@@ -1,15 +1,15 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   OnInit,
   signal,
-  DestroyRef,
   viewChild,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Subject, from, map, catchError, EMPTY, mergeMap } from 'rxjs';
+import { catchError, EMPTY, from, map, mergeMap, Subject } from 'rxjs';
 import { PanelMenu } from 'primeng/panelmenu';
 import { Drawer } from 'primeng/drawer';
 import { Button } from 'primeng/button';

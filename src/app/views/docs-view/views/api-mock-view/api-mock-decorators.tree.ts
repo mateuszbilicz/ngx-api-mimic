@@ -1,7 +1,7 @@
 import {
-    DescriptionTreeBranch,
-    DescriptionTreeIconDecorator,
-    DescriptionTreeIconProperty
+  DescriptionTreeBranch,
+  DescriptionTreeIconDecorator,
+  DescriptionTreeIconProperty,
 } from '../../../../core/api/description-tree';
 
 export const apiMockDecoratorsTree: DescriptionTreeBranch = {

@@ -1,6 +1,6 @@
 import { JsonPipe } from '@angular/common';
 import { classCode, routerCode } from './examples-api-mock-basic-data';
-import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { DocPageComponent } from '../../../../../../core/elements/doc-page/doc-page.component';
 import { CodeViewerComponent } from '../../../../../../core/elements/code-viewer/code-viewer.component';
 import { DocTabsComponent } from '../../../../../../core/elements/doc-tabs/doc-tabs.component';
@@ -12,7 +12,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-examples-api-mock-basic-view',
   imports: [
-        JsonPipe,
+    JsonPipe,
     DocPageComponent,
     CodeViewerComponent,
     DocTabsComponent,
@@ -30,18 +30,21 @@ export class ExamplesApiMockBasicViewComponent {
   countResult = signal<any>(null);
 
   ping() {
-    this.http.get('/api-mock-basic-example/basic-api/ping')
-      .subscribe(res => this.pingResult.set(res));
+    this.http
+      .get('/api-mock-basic-example/basic-api/ping')
+      .subscribe((res) => this.pingResult.set(res));
   }
 
   getCount() {
-    this.http.get('/api-mock-basic-example/basic-api/count')
-      .subscribe(res => this.countResult.set(res));
+    this.http
+      .get('/api-mock-basic-example/basic-api/count')
+      .subscribe((res) => this.countResult.set(res));
   }
 
   incrementCount() {
-    this.http.post('/api-mock-basic-example/basic-api/increment', {})
-      .subscribe(res => this.countResult.set(res));
+    this.http
+      .post('/api-mock-basic-example/basic-api/increment', {})
+      .subscribe((res) => this.countResult.set(res));
   }
 
   classCode = classCode;

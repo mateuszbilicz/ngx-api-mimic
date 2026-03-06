@@ -41,26 +41,26 @@ export class MixedBasicExampleService {
   }
 
   getUser(id: string): Observable<MixedBasic_User> {
-    return this.httpClient.get<MixedBasic_User>(`${this.BASE_PATH}/users/${id}`).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    );
+    return this.httpClient
+      .get<MixedBasic_User>(`${this.BASE_PATH}/users/${id}`)
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   createUser(createUser: MixedBasic_UserCreate): Observable<MixedBasic_User> {
-    return this.httpClient.post<MixedBasic_User>(`${this.BASE_PATH}/users`, createUser).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    );
+    return this.httpClient
+      .post<MixedBasic_User>(`${this.BASE_PATH}/users`, createUser)
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   updateUser(id: string, userUpdate: Partial<MixedBasic_UserCreate>): Observable<MixedBasic_User> {
-    return this.httpClient.put<MixedBasic_User>(`${this.BASE_PATH}/users/${id}`, userUpdate).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    );
+    return this.httpClient
+      .put<MixedBasic_User>(`${this.BASE_PATH}/users/${id}`, userUpdate)
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 
   deleteUser(id: string): Observable<{ ok: boolean }> {
-    return this.httpClient.delete<{ ok: boolean }>(`${this.BASE_PATH}/users/${id}`).pipe(
-      takeUntilDestroyed(this.destroyRef),
-    );
+    return this.httpClient
+      .delete<{ ok: boolean }>(`${this.BASE_PATH}/users/${id}`)
+      .pipe(takeUntilDestroyed(this.destroyRef));
   }
 }

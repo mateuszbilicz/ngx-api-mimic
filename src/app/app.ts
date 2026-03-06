@@ -9,5 +9,4 @@ import { BreadcrumbNavigationComponent } from './core/elements/breadcrumb-naviga
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-}
+export class App {}

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
-import {Tag} from "primeng/tag";
+import { Tag } from 'primeng/tag';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { BehaviorSubject, filter, shareReplay, switchMap, timer } from 'rxjs';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';

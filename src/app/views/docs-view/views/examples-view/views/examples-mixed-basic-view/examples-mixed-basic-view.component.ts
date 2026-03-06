@@ -1,4 +1,4 @@
-import { interfacesCode, classCode, routerCode } from './examples-mixed-basic-data';
+import { classCode, interfacesCode, routerCode } from './examples-mixed-basic-data';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -37,7 +37,7 @@ import { form, FormField, required } from '@angular/forms/signals';
     Button,
     InputText,
     FormsModule,
-    FormField
+    FormField,
   ],
   templateUrl: './examples-mixed-basic-view.component.html',
   styleUrl: './examples-mixed-basic-view.component.css',

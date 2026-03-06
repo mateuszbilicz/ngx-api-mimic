@@ -1,17 +1,17 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Put,
-    Delete,
-    Body,
-    UrlParam,
-    UseGuards,
-    CanActivate,
-    NgxApiMimicExecutionContext,
-    NgxApiMimicException,
-    ngxApiMimicRouterFactory,
-    ngxApiMockInterceptorFactory
+  Body,
+  CanActivate,
+  Controller,
+  Delete,
+  Get,
+  NgxApiMimicException,
+  NgxApiMimicExecutionContext,
+  ngxApiMimicRouterFactory,
+  ngxApiMockInterceptorFactory,
+  Post,
+  Put,
+  UrlParam,
+  UseGuards,
 } from 'ngx-api-mimic';
 
 export enum ApiMockAdvanced_TaskStatus {

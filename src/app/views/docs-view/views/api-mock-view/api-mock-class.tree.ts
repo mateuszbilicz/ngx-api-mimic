@@ -1,8 +1,8 @@
 import {
-    DescriptionTreeBranch,
-    DescriptionTreeIconClass,
-    DescriptionTreeIconMethod,
-    DescriptionTreeIconProperty
+  DescriptionTreeBranch,
+  DescriptionTreeIconClass,
+  DescriptionTreeIconMethod,
+  DescriptionTreeIconProperty,
 } from '../../../../core/api/description-tree';
 
 export const apiMockClassTree: DescriptionTreeBranch = {

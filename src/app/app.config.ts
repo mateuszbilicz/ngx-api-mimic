@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
         mixedBasicExampleInterceptor,
         mixedAdvancedExampleInterceptor,
         apiMockBasicExampleInterceptor,
-        apiMockAdvancedExampleInterceptor
+        apiMockAdvancedExampleInterceptor,
       ]),
     ),
     provideMonacoEditor(),

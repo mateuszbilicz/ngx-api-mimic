@@ -43,9 +43,12 @@ interface MixedAdvanced_UserList {
 }
 
 /** Checks if password inside MixedAdvanced_UserCreate is valid */
-export class BodyPasswordPipe implements PipeTransform<MixedAdvanced_UserCreate, MixedAdvanced_UserCreate> {
+export class BodyPasswordPipe implements PipeTransform<
+  MixedAdvanced_UserCreate,
+  MixedAdvanced_UserCreate
+> {
   transform(value: MixedAdvanced_UserCreate, metadata: ArgumentMetadata): MixedAdvanced_UserCreate {
-    const {password} = value;
+    const { password } = value;
     if (password.length < 8) {
       throw new NgxApiMimicException(
         400,

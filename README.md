@@ -39,9 +39,7 @@ Just start using it!
 
 ## Documentation
 
-Project docs will be hosted under ngx-api-mock.mateuszbilicz.pl domain.
-
-[Link not available yet]
+[Online DOCS](ngx-api-mock.mateuszbilicz.pl)
 
 ## TODO
 

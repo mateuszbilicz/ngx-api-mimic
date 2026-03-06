@@ -1,5 +1,10 @@
-import { interfacesCode, guardCode, classCode, routerCode } from './examples-api-mock-advanced-data';
-import { ChangeDetectionStrategy, Component, signal, inject } from '@angular/core';
+import {
+  classCode,
+  guardCode,
+  interfacesCode,
+  routerCode,
+} from './examples-api-mock-advanced-data';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { DocPageComponent } from '../../../../../../core/elements/doc-page/doc-page.component';
 import { CodeViewerComponent } from '../../../../../../core/elements/code-viewer/code-viewer.component';
 import { DocTabsComponent } from '../../../../../../core/elements/doc-tabs/doc-tabs.component';
@@ -15,7 +20,10 @@ import { InputText } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
 import { Fluid } from 'primeng/fluid';
 import { TooltipModule } from 'primeng/tooltip';
-import { ApiMockAdvanced_Task, ApiMockAdvanced_TaskStatus } from '../../../../../../examples/api-mock-advanced-example';
+import {
+  ApiMockAdvanced_Task,
+  ApiMockAdvanced_TaskStatus,
+} from '../../../../../../examples/api-mock-advanced-example';
 
 @Component({
   selector: 'app-examples-api-mock-advanced-view',
@@ -31,7 +39,7 @@ import { ApiMockAdvanced_Task, ApiMockAdvanced_TaskStatus } from '../../../../..
     InputText,
     TableModule,
     Fluid,
-    TooltipModule
+    TooltipModule,
   ],
   templateUrl: './examples-api-mock-advanced-view.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -43,7 +51,7 @@ export class ExamplesApiMockAdvancedViewComponent {
   tokenOptions = [
     { label: 'No Token (Unauthorized)', value: null },
     { label: 'User Token (Standard User)', value: 'user-token' },
-    { label: 'Admin Token (Administrator)', value: 'admin-token' }
+    { label: 'Admin Token (Administrator)', value: 'admin-token' },
   ];
 
   tasks = signal<ApiMockAdvanced_Task[]>([]);
@@ -51,7 +59,7 @@ export class ExamplesApiMockAdvancedViewComponent {
   loading = signal<boolean>(false);
   statuses = signal<ApiMockAdvanced_TaskStatus[]>([]);
 
-  newTaskForm = signal<{ name: string, status: string }>({ name: '', status: '' });
+  newTaskForm = signal<{ name: string; status: string }>({ name: '', status: '' });
 
   private getHeaders() {
     const headers: any = {};
@@ -64,15 +72,21 @@ export class ExamplesApiMockAdvancedViewComponent {
     this.loading.set(true);
 
     if (this.statuses().length === 0) {
-      this.http.get<any[]>('/api-mock-advanced-example/tasks/statuses', { headers: this.getHeaders() })
+      this.http
+        .get<any[]>('/api-mock-advanced-example/tasks/statuses', { headers: this.getHeaders() })
         .pipe(catchError(() => of([])))
-        .subscribe(res => {
+        .subscribe((res) => {
           if (Array.isArray(res)) this.statuses.set(res);
         });
     }
 
-    this.http.get<{ items: ApiMockAdvanced_Task[], role: string }>('/api-mock-advanced-example/tasks', { headers: this.getHeaders() })
-      .pipe(catchError(err => of({ error: err.error?.message || err.message, status: err.status })))
+    this.http
+      .get<{ items: ApiMockAdvanced_Task[]; role: string }>('/api-mock-advanced-example/tasks', {
+        headers: this.getHeaders(),
+      })
+      .pipe(
+        catchError((err) => of({ error: err.error?.message || err.message, status: err.status })),
+      )
       .subscribe((res: any) => {
         this.loading.set(false);
         if (res.items) {
@@ -89,8 +103,11 @@ export class ExamplesApiMockAdvancedViewComponent {
     if (!form.name || !form.status) return;
 
     this.loading.set(true);
-    this.http.post('/api-mock-advanced-example/tasks', form, { headers: this.getHeaders() })
-      .pipe(catchError(err => of({ error: err.error?.message || err.message, status: err.status })))
+    this.http
+      .post('/api-mock-advanced-example/tasks', form, { headers: this.getHeaders() })
+      .pipe(
+        catchError((err) => of({ error: err.error?.message || err.message, status: err.status })),
+      )
       .subscribe((res: any) => {
         this.loading.set(false);
         if (!res.error) {
@@ -104,8 +121,15 @@ export class ExamplesApiMockAdvancedViewComponent {
 
   updateTask(id: string, name: string, status: string) {
     this.loading.set(true);
-    this.http.put(`/api-mock-advanced-example/tasks/${id}`, { name, status }, { headers: this.getHeaders() })
-      .pipe(catchError(err => of({ error: err.error?.message || err.message, status: err.status })))
+    this.http
+      .put(
+        `/api-mock-advanced-example/tasks/${id}`,
+        { name, status },
+        { headers: this.getHeaders() },
+      )
+      .pipe(
+        catchError((err) => of({ error: err.error?.message || err.message, status: err.status })),
+      )
       .subscribe((res: any) => {
         this.loading.set(false);
         if (!res.error) {
@@ -118,8 +142,11 @@ export class ExamplesApiMockAdvancedViewComponent {
 
   deleteTask(id: string) {
     this.loading.set(true);
-    this.http.delete(`/api-mock-advanced-example/tasks/${id}`, { headers: this.getHeaders() })
-      .pipe(catchError(err => of({ error: err.error?.message || err.message, status: err.status })))
+    this.http
+      .delete(`/api-mock-advanced-example/tasks/${id}`, { headers: this.getHeaders() })
+      .pipe(
+        catchError((err) => of({ error: err.error?.message || err.message, status: err.status })),
+      )
       .subscribe((res: any) => {
         this.loading.set(false);
         if (!res.error) {

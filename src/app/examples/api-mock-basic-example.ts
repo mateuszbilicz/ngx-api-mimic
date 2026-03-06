@@ -1,4 +1,10 @@
-import { Controller, Get, Post, ngxApiMimicRouterFactory, ngxApiMockInterceptorFactory } from 'ngx-api-mimic';
+import {
+  Controller,
+  Get,
+  ngxApiMimicRouterFactory,
+  ngxApiMockInterceptorFactory,
+  Post,
+} from 'ngx-api-mimic';
 
 @Controller('basic-api')
 export class ApiMockBasicController {

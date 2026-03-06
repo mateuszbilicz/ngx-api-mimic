@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, signal, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { debounceTime } from 'rxjs/operators';
 
@@ -24,28 +24,40 @@ export class DataMockViewComponent implements OnInit {
   searchQuery = signal<string>('');
   forceExpand = signal<boolean>(false);
 
-  classTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
-  typesAndInterfacesTree = signal<DescriptionTreeBranch>({ title: 'Loading...', description: 'Content will appear soon...', items: [] });
+  classTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
+  typesAndInterfacesTree = signal<DescriptionTreeBranch>({
+    title: 'Loading...',
+    description: 'Content will appear soon...',
+    items: [],
+  });
 
   private originalClassTree: DescriptionTreeBranch | null = null;
   private originalTypesTree: DescriptionTreeBranch | null = null;
 
   constructor() {
-    toObservable(this.searchQuery).pipe(
-      debounceTime(500)
-    ).subscribe(query => {
-      this.forceExpand.set(!!query);
-      if (this.originalClassTree) this.classTree.set(this.searchService.searchInTree(query, this.originalClassTree));
-      if (this.originalTypesTree) this.typesAndInterfacesTree.set(this.searchService.searchInTree(query, this.originalTypesTree));
-    });
+    toObservable(this.searchQuery)
+      .pipe(debounceTime(500))
+      .subscribe((query) => {
+        this.forceExpand.set(!!query);
+        if (this.originalClassTree)
+          this.classTree.set(this.searchService.searchInTree(query, this.originalClassTree));
+        if (this.originalTypesTree)
+          this.typesAndInterfacesTree.set(
+            this.searchService.searchInTree(query, this.originalTypesTree),
+          );
+      });
   }
 
   ngOnInit() {
-    import('./data-mock-class.tree').then(t => {
+    import('./data-mock-class.tree').then((t) => {
       this.originalClassTree = t.dataMockClassTree;
       this.classTree.set(this.originalClassTree);
     });
-    import('./data-mock-types.tree').then(t => {
+    import('./data-mock-types.tree').then((t) => {
       this.originalTypesTree = t.dataMockTypesTree;
       this.typesAndInterfacesTree.set(this.originalTypesTree);
     });
