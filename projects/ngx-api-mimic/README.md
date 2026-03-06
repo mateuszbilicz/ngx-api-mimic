@@ -24,26 +24,12 @@ This library is made for:
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.0.
 
-## Current version (v0.0.7)
+## Current version (v0.0.8)
 
-You can start using this version in your projects,
-but there's not much documentation yet.
-Look into the angular repository of this project for some hints on how to use it.
-
-Example:
-- src/app/test.ts - interfaces, controller with schematic, router and interceptor.
-- src/app.config.ts - adding api mock interceptor to your app
-- src/app.ts - basic API calls, I'm testing functionalities on these
-
-Over next few days I'll be writing tests and documentation page.
+You can use this version in your projects.
+Over next few days I'll be writing tests.
 
 If you have any ideas or issues, let me know in GitHub issues.
-
-**IMPORTANT!**
-Some class or interface names can be identical to Angular -
-I've used naming from NestJS to make it easier to just copy-paste the code into the back-end project and create real API.
-It means that you'll have to separate these mock classes from your angular component / service files to prevent duplicated names and have clean-code.
-Only class that can be used directly from Angular is **HttpHeaders**.
 
 ## Installation
 
@@ -76,7 +62,7 @@ Project docs will be hosted under ngx-api-mock.mateuszbilicz.pl domain.
 - [X] Add support for pipes
 - [X] Add router prefix for multiple routers running at the same time
 - [ ] Write tests
-- [ ] Write app with example usages
+- [X] Write app with example usages
 
 ## License
 

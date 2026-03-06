@@ -6,6 +6,7 @@ export const routes: NamedRoutes = [
     data: {
       name: 'Welcome',
       icon: 'pi pi-home',
+      hideInNavigation: true,
     },
     loadComponent: () =>
       import('./views/welcome-view/welcome-view.component').then((v) => v.WelcomeViewComponent),

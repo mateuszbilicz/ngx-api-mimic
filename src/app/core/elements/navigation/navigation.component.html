@@ -1,33 +1,31 @@
-<p-button
-  icon="pi pi-bars"
-  [text]="true"
-  class="nav-button"
-  (onClick)="drawerVisible.set(true)"
-/>
+<p-button icon="pi pi-bars" [text]="true" class="nav-button" (onClick)="drawerVisible.set(true)" />
 
 <p-menubar [model]="navigationEntries()" breakpoint="754px" class="desktop-menu" #menu>
   <ng-template #start>
-    <div class="flex gap-2 items-center pr-5 border-r-2 border-r-gray-500/20">
+    <a routerLink="/" class="flex gap-2 items-center pr-5 border-r-2 border-r-gray-500/20 text-inherit no-underline">
       <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
-      <span>NGX API Mimic</span>
-    </div>
+      <span class="font-semibold text-lg hover:text-primary transition-colors">NGX API Mimic</span>
+    </a>
   </ng-template>
-  <ng-template #item let-item>
-    <a [id]="item.id"
-       class="flex items-center p-menubar-item-link px-3 py-2 cursor-pointer"
-       (click)="onEntryClick(item, $event)">
-      @if (item.icon) {
+  <ng-template #item let-item let-root="root">
+    <a [id]="item.id" class="flex items-center p-menubar-item-link px-2 py-0 cursor-pointer h-full"
+      [class.justify-between]="!root" (click)="onEntryClick(item, $event)">
+      <div class="flex items-center h-full px-2 py-2 group-hover:text-primary transition-colors" [class.flex-1]="!root">
+        @if (item.icon) {
         <span [class]="item.icon" class="mr-2"></span>
-      }
-      <span class="font-medium">{{ item.label }}</span>
+        }
+        <span class="font-medium" [class.whitespace-nowrap]="root">{{ item.label }}</span>
+      </div>
       @if (item.hasChildren) {
-        <span class="ml-2 flex items-center">
-            @if (item.loading) {
-              <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
-            } @else {
-              <i class="pi pi-angle-down opacity-40 text-xs"></i>
-            }
-          </span>
+      <div
+        class="flex items-center justify-center min-w-8 min-h-8 rounded hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors cursor-pointer"
+        [class.ml-1]="root" [class.ml-4]="!root" (click)="onExpandIconClick(item, $event)">
+        @if (item.loading) {
+        <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
+        } @else {
+        <i class="pi pi-angle-down opacity-60 text-xs"></i>
+        }
+      </div>
       }
     </a>
   </ng-template>
@@ -35,29 +33,31 @@
 
 <p-drawer [(visible)]="drawerVisible">
   <ng-template #header>
-    <div class="flex gap-2 items-center">
+    <a routerLink="/" (click)="drawerVisible.set(false)" class="flex gap-2 items-center text-inherit no-underline">
       <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">
-      <span>NGX API Mimic</span>
-    </div>
+      <span class="font-semibold text-lg hover:text-primary transition-colors">NGX API Mimic</span>
+    </a>
   </ng-template>
-  <p-panelMenu [model]="navigationEntries()"
-               [multiple]="true">
+  <p-panelMenu [model]="navigationEntries()" [multiple]="true">
     <ng-template #item let-item>
-      <div class="flex items-center justify-between w-full p-3 cursor-pointer" (click)="onEntryClick(item, $event)">
-        <div class="flex items-center">
+      <div class="flex items-center justify-between w-full cursor-pointer group" (click)="onEntryClick(item, $event)">
+        <div
+          class="flex items-center px-3 py-3 rounded group-hover:text-primary transition-colors flex-1 w-full h-full">
           @if (item.icon) {
-            <span [class]="item.icon" class="mr-2"></span>
+          <span [class]="item.icon" class="mr-2"></span>
           }
           <span class="font-medium">{{ item.label }}</span>
         </div>
         @if (item.hasChildren) {
-          <div class="flex items-center">
-            @if (item.loading) {
-              <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
-            } @else {
-              <i [class]="item.expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="opacity-40 text-xs"></i>
-            }
-          </div>
+        <div
+          class="flex items-center justify-center min-w-10 min-h-10 rounded hover:bg-surface-200 dark:hover:bg-surface-700 transition-colors ml-4 mr-2"
+          (click)="onExpandIconClick(item, $event)">
+          @if (item.loading) {
+          <i class="pi pi-spin pi-spinner text-primary text-xs"></i>
+          } @else {
+          <i [class]="item.expanded ? 'pi pi-chevron-up' : 'pi pi-chevron-down'" class="opacity-60 text-xs"></i>
+          }
+        </div>
         }
       </div>
     </ng-template>
