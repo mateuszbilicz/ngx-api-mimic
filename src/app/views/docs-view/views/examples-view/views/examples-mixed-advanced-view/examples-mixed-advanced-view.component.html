@@ -1,4 +1,4 @@
-<app-doc-page name="Mixed Basic Example">
+<app-doc-page name="Mixed Advanced Example">
   <p>
     This example contains controller class that mocks data.
   </p>
@@ -10,18 +10,40 @@
   <h3>
     Interfaces used in this example
   </h3>
-  <app-code-viewer filename="mixed-basic-example.ts"
+  <app-code-viewer filename="mixed-advanced-example.ts"
                    [code]="interfacesCode"
-                   height="20rem"/>
+                   height="27rem"/>
+  <h3>
+    Custom pipe
+  </h3>
+  <p>
+    You can create custom pipes that can modify and validate variables inside
+    endpoint params.
+  </p>
+  <app-code-viewer filename="mixed-advanced-example.ts"
+                   [code]="pipeCode"
+                   height="31rem"/>
+  <h3>
+    Custom guard
+  </h3>
+  <p>
+    In this example, we implemented MixedAdvanced_AuthGuard guard which checks, if token
+    inside Authorization header is equal to "test".
+  </p>
+  <app-code-viewer filename="mixed-advanced-example.ts"
+                   [code]="guardCode"
+                   height="15rem"/>
   <h3>
     Class code
   </h3>
   <p>
     In this class we're using {{ '@Controller' }} and {{ '@UsingSchema' }} decodators
     to initialize controller and define mock schema.
+    Also, we've added {{ '@UseGuards' }} decorator to implement guards.
+    Inside POST /users (userCreate) we've added custom pipe BodyPasswordPipe to {{ '@Body' }} decorator.
     Inside the class we're defining specific methods via functions and method decorators.
   </p>
-  <app-code-viewer filename="mixed-basic-example.ts"
+  <app-code-viewer filename="mixed-advanced-example.ts"
                    [code]="classCode"
                    height="40rem"/>
   <h3>
@@ -31,7 +53,7 @@
     We need to build router and create interceptor for our mock.
     router.usePrefix is defined to distinct different example API routes.
   </p>
-  <app-code-viewer filename="mixed-basic-example.ts"
+  <app-code-viewer filename="mixed-advanced-example.ts"
                    [code]="routerCode"/>
 </ng-template>
 
@@ -61,10 +83,11 @@
           <th>
             Email
           </th>
+          <th>Role</th>
           <th colspan="3"></th>
         </tr>
         <tr>
-          <td colspan="6">
+          <td colspan="7">
             <h3>Create new</h3>
           </td>
         </tr>
@@ -81,6 +104,10 @@
             <label for="email">Email</label>
             <input id="email" pInputText type="text" [formField]="newUserForm.email" fluid>
           </td>
+          <td>
+            <label for="role">Role</label>
+            <input id="role" pInputText type="text" value="USER" disabled fluid>
+          </td>
           <td class="min-w-12">
             <label for="age">Age</label>
             <input id="age" pInputText type="number" [formField]="newUserForm.age" fluid>
@@ -91,7 +118,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="6">
+          <td colspan="7">
             <div class="flex justify-end">
               <p-button label="Create"
                         [disabled]="newUserForm().invalid()"
@@ -131,6 +158,9 @@
                 {{ item.email }}
               </ng-template>
             </p-cellEditor>
+          </td>
+          <td>
+            {{ item.role }}
           </td>
           <td colspan="3">
             <div class="flex gap-1 justify-center items-center">

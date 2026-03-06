@@ -1,23 +1,25 @@
 import {
+  ArgumentMetadata,
   Body,
+  CanActivate,
   Controller,
   Delete,
   Get,
+  NgxApiMimicException,
+  NgxApiMimicExecutionContext,
   ngxApiMimicRouterFactory,
   ngxApiMockInterceptorFactory,
+  ParseIntPipe,
+  PipeTransform,
   Post,
   Put,
-  UrlParam,
-  UsingSchema,
   Query,
-  ParseIntPipe,
-  CanActivate,
-  NgxApiMimicExecutionContext,
-  NgxApiMimicException,
+  UrlParam,
   UseGuards,
+  UsingSchema,
 } from 'ngx-api-mimic';
 
-interface UserCreate {
+interface MixedAdvanced_UserCreate {
   firstName: string;
   lastName: string;
   email: string;
@@ -25,16 +27,48 @@ interface UserCreate {
   password: string;
 }
 
-interface User extends UserCreate {
+const UserRoles = ['USER', 'MODERATOR', 'ADMIN'] as const;
+
+type UserRole = (typeof UserRoles)[number];
+
+interface MixedAdvanced_User extends MixedAdvanced_UserCreate {
   id: string;
+  role: UserRole;
+  createDate: Date;
 }
 
-interface UserList {
-  items: User[];
+interface MixedAdvanced_UserList {
+  items: MixedAdvanced_User[];
   totalCount: number;
 }
 
-class AuthGuard implements CanActivate {
+/** Checks if password inside MixedAdvanced_UserCreate is valid */
+export class BodyPasswordPipe implements PipeTransform<MixedAdvanced_UserCreate, MixedAdvanced_UserCreate> {
+  transform(value: MixedAdvanced_UserCreate, metadata: ArgumentMetadata): MixedAdvanced_UserCreate {
+    const {password} = value;
+    if (password.length < 8) {
+      throw new NgxApiMimicException(
+        400,
+        `Validation failed (password must contain at least 8 characters) for property: ${metadata.data}`,
+      );
+    }
+    if (!new RegExp(/[!@#$%^&*.,()\\/]/g).test(password)) {
+      throw new NgxApiMimicException(
+        400,
+        `Validation failed (password must contain at least 1 special character) for property: ${metadata.data}`,
+      );
+    }
+    if (!new RegExp(/[A-Z]/g).test(password)) {
+      throw new NgxApiMimicException(
+        400,
+        `Validation failed (password must contain at least 1 large character) for property: ${metadata.data}`,
+      );
+    }
+    return value;
+  }
+}
+
+class MixedAdvanced_AuthGuard implements CanActivate {
   canActivate(context: NgxApiMimicExecutionContext): boolean {
     const request = context.getRequest();
     const authHeader = request.headers.get('Authorization');
@@ -48,8 +82,8 @@ class AuthGuard implements CanActivate {
 }
 
 @Controller('users')
-@UseGuards(AuthGuard)
-@UsingSchema<UserList>('users', {
+@UseGuards(MixedAdvanced_AuthGuard)
+@UsingSchema<MixedAdvanced_UserList>('users-advanced', {
   type: 'object',
   items: {
     items: {
@@ -60,6 +94,10 @@ class AuthGuard implements CanActivate {
         items: {
           id: {
             type: 'string',
+          },
+          role: {
+            type: 'enum',
+            enum: [...UserRoles],
           },
           firstName: {
             type: 'firstName',
@@ -80,6 +118,11 @@ class AuthGuard implements CanActivate {
           password: {
             type: 'password',
           },
+          createDate: {
+            type: 'custom',
+            customFn: (instructions) =>
+              instructions.randomDate(new Date(2025, 0, 1), new Date(2026, 3, 6)),
+          },
         },
       },
     },
@@ -90,7 +133,7 @@ class AuthGuard implements CanActivate {
   },
 })
 class UsersController {
-  data!: UserList;
+  data!: MixedAdvanced_UserList;
 
   @Get('/list')
   listUsers(
@@ -98,7 +141,6 @@ class UsersController {
     @Query('skip', ParseIntPipe) skip: number = 0,
     @Query('count', ParseIntPipe) count: number = 10,
   ) {
-    console.log('LIST USERS');
     textFilter = (textFilter || '').toLowerCase();
     skip = skip || 0;
     count = count || 10;
@@ -121,10 +163,12 @@ class UsersController {
   }
 
   @Post('/')
-  createUser(@Body() userCreate: UserCreate) {
+  createUser(@Body(BodyPasswordPipe) userCreate: MixedAdvanced_UserCreate) {
     const newUser = {
       ...userCreate,
       id: Math.round(Math.random() * 999999).toString(36) + Date.now().toString(36),
+      role: UserRoles[0],
+      createDate: new Date(),
     };
     this.data = {
       items: [...this.data.items, newUser],
@@ -134,7 +178,7 @@ class UsersController {
   }
 
   @Put('/:id')
-  updateUser(@UrlParam('id') id: string, @Body() userUpdate: Partial<UserCreate>) {
+  updateUser(@UrlParam('id') id: string, @Body() userUpdate: Partial<MixedAdvanced_UserCreate>) {
     const currentUser = this.data.items.find((user) => user.id === id);
     if (!currentUser) throw new Error('User not found');
     const updatedUser = {

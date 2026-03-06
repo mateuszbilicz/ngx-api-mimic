@@ -27,4 +27,19 @@ export const examplesViewRoutes: ExampleRoutes = [
         (v) => v.ExamplesMixedBasicViewComponent,
       ),
   },
+  {
+    path: 'mixed-advanced',
+    data: {
+      name: 'Mixed Advanced',
+      properties: {
+        tags: ['Mixed', 'Advanced'],
+        title: 'Mixed Advanced',
+        description: `Advanced CRUD controller to manage users mocked within the controller.`,
+      },
+    },
+    loadComponent: () =>
+      import('./views/examples-mixed-advanced-view/examples-mixed-advanced-view.component').then(
+        (v) => v.ExamplesMixedAdvancedViewComponent,
+      ),
+  },
 ];
