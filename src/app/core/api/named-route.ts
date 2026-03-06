@@ -1,11 +1,12 @@
 import { Route } from '@angular/router';
 
-export interface NamedRoute
+export interface NamedRoute<T = any>
   extends Route {
   data: {
     name: string;
     icon?: string;
     hideInNavigation?: boolean;
+    properties?: T;
   }
 }
 

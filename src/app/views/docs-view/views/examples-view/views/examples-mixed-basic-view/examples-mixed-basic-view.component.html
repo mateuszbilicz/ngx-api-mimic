@@ -1,0 +1,147 @@
+<app-doc-page name="Mixed Basic Example">
+  <p>
+    This example contains controller class that mocks data.
+  </p>
+  <app-doc-tabs [codeTemplate]="codeTemplate"
+                [previewTemplate]="previewTemplate"/>
+</app-doc-page>
+
+<ng-template #codeTemplate>
+  <h3>
+    Interfaces used in this example
+  </h3>
+  <app-code-viewer filename="mixed-basic-example.ts"
+                   [code]="interfacesCode"
+                   height="20rem"/>
+  <h3>
+    Class code
+  </h3>
+  <p>
+    In this class we're using {{ '@Controller' }} and {{ '@UsingSchema' }} decodators
+    to initialize controller and define mock schema.
+    Inside the class we're defining specific methods via functions and method decorators.
+  </p>
+  <app-code-viewer filename="mixed-basic-example.ts"
+                   [code]="classCode"
+                   height="40rem"/>
+  <h3>
+    Router and interceptor
+  </h3>
+  <p>
+    We need to build router and create interceptor for our mock.
+    router.usePrefix is defined to distinct different example API routes.
+  </p>
+  <app-code-viewer filename="mixed-basic-example.ts"
+                   [code]="routerCode"/>
+</ng-template>
+
+<ng-template #previewTemplate>
+  <app-console-preview/>
+  <p-panel header="UI">
+    <input pInputText type="text" placeholder="Search" [(ngModel)]="filterText"/>
+    <p-table [value]="usersList()"
+             [loading]="usersLoading()"
+             [paginator]="true"
+             [rows]="10"
+             [totalRecords]="usersCount()"
+             [lazy]="true"
+             [rowsPerPageOptions]="undefined"
+             [showCurrentPageReport]="true"
+             (onPage)="this.setSkip($event.first)"
+             (onEditComplete)="updateUser($event.index, $event.field, $event.data)"
+             dataKey="id">
+      <ng-template #header>
+        <tr>
+          <th>
+            First name
+          </th>
+          <th>
+            Last name
+          </th>
+          <th>
+            Email
+          </th>
+          <th colspan="3"></th>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <h3>Create new</h3>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="firstName">First name</label>
+            <input id="firstName" pInputText type="text" [formField]="newUserForm.firstName" fluid>
+          </td>
+          <td>
+            <label for="lastName">Last name</label>
+            <input id="lastName" pInputText type="text" [formField]="newUserForm.lastName" fluid>
+          </td>
+          <td>
+            <label for="email">Email</label>
+            <input id="email" pInputText type="text" [formField]="newUserForm.email" fluid>
+          </td>
+          <td>
+            <label for="age">Age</label>
+            <input id="age" pInputText type="number" [formField]="newUserForm.age" fluid>
+          </td>
+          <td>
+            <label for="password">Password</label>
+            <input id="password" pInputText type="text" [formField]="newUserForm.password" fluid>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="6">
+            <div class="flex justify-end">
+              <p-button label="Create"
+                        [disabled]="newUserForm().invalid()"
+                        (onClick)="createUser()"/>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #body let-item let-editing="editing">
+        <tr>
+          <td [pEditableColumn]="item.firstName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="firstName">
+            <p-cellEditor>
+              <ng-template #input>
+                <input pInputText type="text" [(ngModel)]="item.firstName" fluid/>
+              </ng-template>
+              <ng-template #output>
+                {{ item.firstName }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="item.lastName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="lastName">
+            <p-cellEditor>
+              <ng-template #input>
+                <input pInputText type="text" [(ngModel)]="item.lastName" fluid/>
+              </ng-template>
+              <ng-template #output>
+                {{ item.lastName }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td [pEditableColumn]="item.email" [pEditableColumnRowIndex]="item.id" pEditableColumnField="email">
+            <p-cellEditor>
+              <ng-template #input>
+                <input pInputText type="text" [(ngModel)]="item.email" fluid/>
+              </ng-template>
+              <ng-template #output>
+                {{ item.email }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td colspan="3">
+            <div class="flex gap-1 justify-center items-center">
+              <p-button icon="pi pi-trash"
+                        text
+                        severity="danger"
+                        (onClick)="deleteUser(item.id)"/>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-panel>
+</ng-template>

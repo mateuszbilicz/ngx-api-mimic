@@ -5,7 +5,7 @@
   (onClick)="drawerVisible.set(true)"
 />
 
-<p-menubar [model]="navigationEntries()" class="desktop-menu" #menu>
+<p-menubar [model]="navigationEntries()" breakpoint="754px" class="desktop-menu" #menu>
   <ng-template #start>
     <div class="flex gap-2 items-center pr-5 border-r-2 border-r-gray-500/20">
       <img src="/icon/ngx-api-mimic.png" alt="ngx-api-mimic icon" class="w-[2rem] h-[2rem] object-cover">

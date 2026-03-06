@@ -1,16 +1,14 @@
-import {
-  ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-} from '@angular/core';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { interceptor } from './test';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 import { providePrimeNG } from 'primeng/config';
 import Nora from '@primeuix/themes/nora';
 import { BreadcrumbNavigationService } from './core/services/breadcrumb-navigation/breadcrumb-navigation.service';
+import { mixedBasicExampleInterceptor } from './examples/mixed-basic-example';
+import { mixedAdvancedExampleInterceptor } from './examples/mixed-advanced-example';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,8 +25,10 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([interceptor])),
+    provideHttpClient(
+      withInterceptors([mixedBasicExampleInterceptor, mixedAdvancedExampleInterceptor]),
+    ),
     provideMonacoEditor(),
-    BreadcrumbNavigationService
+    BreadcrumbNavigationService,
   ],
 };

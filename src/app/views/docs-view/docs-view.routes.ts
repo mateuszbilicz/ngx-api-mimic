@@ -38,9 +38,7 @@ export const docsViewRoutes: NamedRoutes = [
       name: 'API Mock',
     },
     loadComponent: () =>
-      import('./views/api-mock-view/api-mock-view.component').then(
-        (v) => v.ApiMockViewComponent,
-      ),
+      import('./views/api-mock-view/api-mock-view.component').then((v) => v.ApiMockViewComponent),
   },
   {
     path: 'examples',
@@ -48,8 +46,8 @@ export const docsViewRoutes: NamedRoutes = [
       name: 'Examples',
     },
     loadComponent: () =>
-      import('./views/examples-view/examples-view.component').then(
-        (v) => v.ExamplesViewComponent,
-      ),
+      import('./views/examples-view/examples-view.component').then((v) => v.ExamplesViewComponent),
+    loadChildren: () =>
+      import('./views/examples-view/examples-view.routes').then((r) => r.examplesViewRoutes),
   },
 ];
