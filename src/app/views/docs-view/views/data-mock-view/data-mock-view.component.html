@@ -1,1 +1,11 @@
-<p>data-mock-view works!</p>
+<app-doc-page name="Data Mock">
+  <p class="text-justify">
+    Data mock is designed to give you base class that can generate
+    random data based on your schematic, but also by letting you create
+    methods inside this class.
+    You just need to define your interfaces used across the app, schematic and methods.
+    This part of the library will handle data generation and storing this data in LocalStorage.
+  </p>
+  <app-description-tree [branch]="classTree"/>
+  <app-description-tree [branch]="typesAndInterfacesTree"/>
+</app-doc-page>

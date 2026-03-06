@@ -1,1 +1,16 @@
-<p>api-mock-view works!</p>
+<app-doc-page name="API Mock">
+  <p class="text-justify">
+    API Mock gives you all you need to mock API inside Angular app.
+    From interceptor that redirects HTTP requests to functions inside the app,
+    router that manages routing between controllers,
+    controllers that work on specific path and contain methods
+    to methods that work as specific endpoints serving specific HTTP method.
+    API Mock Controllers are recreated to resemble parts of NestJS
+    which makes it easier when you have Angular app with mock and you want to create API
+    - you just copy-paste this code and write what's really inside.
+  </p>
+  <app-description-tree [branch]="classTree"/>
+  <app-description-tree [branch]="decoratorsTree"/>
+  <app-description-tree [branch]="pipesTree"/>
+  <app-description-tree [branch]="typesAndInterfacesTree"/>
+</app-doc-page>

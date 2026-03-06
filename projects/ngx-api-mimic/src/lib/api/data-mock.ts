@@ -103,7 +103,6 @@ export interface NgxApiMimicMockDataObjectValOptions<
   items: { [K in keyof T]: MockSchemaOf<T[K]> };
 }
 
-
 /** Schematic array mock value options interface */
 export interface NgxApiMimicMockDataArrayValOptions<
   T = any,
@@ -158,7 +157,14 @@ export interface NgxApiMimicMockCustomFunctionInstructions {
   randomEmail: () => string;
   emailBasedOnName: (firstName: string, lastName: string) => string;
   randomEnum: (enumArray: any[]) => any;
-  password: (minLength: number, maxLength: number) => string;
+  password: (
+    minLength: number,
+    maxLength: number,
+    customUpperCharset?: string,
+    customLowerCharset?: string,
+    customNumberCharset?: string,
+    customSpecialCharset?: string,
+  ) => string;
   custom: (customFn: (options: NgxApiMimicMockCustomFunctionInstructions) => any) => any;
 }
 

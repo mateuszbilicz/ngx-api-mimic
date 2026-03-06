@@ -1,0 +1,26 @@
+<h3 class="mt-2 mb-1"
+    tabindex="0"
+    (click)="toggle()">
+  <i class="font-bold! pi pi-{{expandIcon()}} mr-2 cursor-pointer"></i>
+  @if (icon()) {
+    <i class="font-bold! {{icon()}} mr-1"></i>
+  }
+  {{ title() }}
+</h3>
+@if (expanded()) {
+  <p class="m-0 p-0">{{ description() }}</p>
+  @if (url()) {
+    <p-button icon="pi pi-external-link"
+              label="Open"
+              severity="info"
+              text
+              [routerLink]="url()"/>
+  }
+  @if (items()) {
+    <div class="flex flex-col w-full pl-3 border-l border-l-gray-500/30">
+      @for (item of items(); track item.title) {
+        <app-description-tree [branch]="item"/>
+      }
+    </div>
+  }
+}

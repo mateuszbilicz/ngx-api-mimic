@@ -97,7 +97,7 @@ export const Put = (path: string) => createEndpointDecorator('PUT', path);
 /** HTTP DELETE method endpoint */
 export const Delete = (path: string) => createEndpointDecorator('DELETE', path);
 
-/** Injects specific query parameter or the whole query map */
+/** Injects specific query parameter */
 export function Query(
   name: string,
   ...pipes: (Class<PipeTransform> | PipeTransform)[]
@@ -137,7 +137,7 @@ export function UrlParam(name: string,
   };
 }
 
-/** Injects specific header or the whole HttpHeaders object */
+/** Injects specific header */
 export function Headers(name: string,
   ...pipes: (Class<PipeTransform> | PipeTransform)[]): ParameterDecorator {
   return (target, propertyKey, parameterIndex) => {

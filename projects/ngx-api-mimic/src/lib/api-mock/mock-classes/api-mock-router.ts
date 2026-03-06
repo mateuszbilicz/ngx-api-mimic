@@ -93,7 +93,6 @@ export class NgxApiMimicRouter {
     };
   }
 
-  /** Updated execMethod to support async Guards and Pipes */
   async execMethod(method: HttpMethod, path: string, body: any, headers: HttpHeaders) {
     let cleanPath = path.replace(/^https?:\/\/[^\/]+/, '').replace(/^\//, '');
 
@@ -192,7 +191,7 @@ export class NgxApiMimicRouter {
 }
 
 /** Creates NGX Api Mimic Router with list of Controller classes */
-export const ngxApiMimicRouterFactory = (classes: Class<unknown>[]) => {
+export const ngxApiMimicRouterFactory = (classes: Class<unknown>[]): NgxApiMimicRouter => {
   const router = new NgxApiMimicRouter();
   router.initialize(classes);
   return router;
