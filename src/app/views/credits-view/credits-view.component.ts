@@ -67,6 +67,12 @@ export class CreditsViewComponent implements OnInit {
       description: `Node.js framework built to look like Angular. It was my inspiration to write this library the way it looks.`,
       url: 'https://nestjs.com/',
     },
+    {
+      name: 'Gemini',
+      icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Google_Gemini_icon_2025.svg/120px-Google_Gemini_icon_2025.svg.png',
+      description: `AI model that helped me with some stuff and became main /docs maintainer.`,
+      url: 'https://gemini.google/about/',
+    },
   ]);
 
   ngOnInit() {
