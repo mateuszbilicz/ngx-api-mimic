@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import packageJson from '../../../../projects/ngx-api-mimic/package.json';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DividerModule } from 'primeng/divider';
 import { ChipModule } from 'primeng/chip';
 import { RouterLink } from '@angular/router';
+import { AppTitleService } from '../../core/services/app-title/app-title.service';
 
 @Component({
   selector: 'app-welcome-view',
@@ -14,6 +15,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WelcomeViewComponent {
+  protected readonly appTitleService = inject(AppTitleService);
   version = signal(packageJson.version);
   libName = signal(packageJson.name);
   description = signal(packageJson.description);
@@ -29,4 +31,8 @@ export class WelcomeViewComponent {
     'Complete mock backend features: angular interceptor, router, controllers, decorators, and guards',
     'Easily migrate mocked API to NestJS thanks to identical API decorators and architecture',
   ]);
+
+  constructor() {
+    this.appTitleService.setTitle('Welcome');
+  }
 }

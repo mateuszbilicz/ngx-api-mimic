@@ -12,6 +12,7 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
+import { AppTitleService } from '../../core/services/app-title/app-title.service';
 
 interface Contributor {
   avatarUrl: string;
@@ -42,6 +43,7 @@ interface Other {
   providers: [HttpClient],
 })
 export class CreditsViewComponent implements OnInit {
+  protected readonly appTitleService = inject(AppTitleService);
   protected readonly httpClient = inject(HttpClient);
   protected readonly destroyRef = inject(DestroyRef);
   contributorsUsernames = signal<string[]>(['mateuszbilicz']);
@@ -74,6 +76,10 @@ export class CreditsViewComponent implements OnInit {
       url: 'https://gemini.google/about/',
     },
   ]);
+
+  constructor() {
+    this.appTitleService.setTitle('Credits');
+  }
 
   ngOnInit() {
     this.contributorsUsernames().forEach((contributor) => {
