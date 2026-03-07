@@ -1,6 +1,6 @@
 {
   "name": "ngx-api-mimic",
-  "version": "0.0.10",
+  "version": "1.0.0",
   "description": "Angular API Mock library for demo apps.",
   "keywords": [
     "Angular",
@@ -26,5 +26,5 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": true
 }
