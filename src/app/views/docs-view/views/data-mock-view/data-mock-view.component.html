@@ -1,16 +1,21 @@
 <app-doc-page name="Data Mock">
   <p class="text-justify mb-4">
-    Data mock is designed to give you base class that can generate
-    random data based on your schematic, but also by letting you create
-    methods inside this class.
-    You just need to define your interfaces used across the app, schematic and methods.
-    This part of the library will handle data generation and storing this data in LocalStorage.
+    Data mock is designed to give you base class that can generate random data based on your
+    schematic, but also by letting you create methods inside this class. You just need to define
+    your interfaces used across the app, schematic and methods. This part of the library will handle
+    data generation and storing this data in LocalStorage.
   </p>
   <div class="mb-4">
     <p-iconfield>
       <p-inputicon class="pi pi-search"></p-inputicon>
-      <input type="text" pInputText placeholder="Search Data Mock docs..." [value]="searchQuery()"
-        (input)="onSearch($event)" class="w-full" />
+      <input
+        type="text"
+        pInputText
+        placeholder="Search Data Mock docs..."
+        [value]="searchQuery()"
+        (input)="onSearch($event)"
+        class="w-full"
+      />
     </p-iconfield>
   </div>
   <app-description-tree [branch]="classTree()" [forceExpand]="forceExpand()" />

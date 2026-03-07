@@ -1,12 +1,18 @@
 <app-doc-page name="List of examples">
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
     @for (example of examples(); track example.path) {
-      <a [routerLink]="example.path"
-         class="flex flex-col items-center gap-2 p-3 rounded-none border border-surface bg-surface hover:border-primary/50 transition-all shadow-sm hover:shadow-md no-underline">
+      <a
+        [routerLink]="example.path"
+        class="flex flex-col items-center gap-2 p-3 rounded-none border border-surface bg-surface hover:border-primary/50 transition-all shadow-sm hover:shadow-md no-underline"
+      >
         <div class="w-full">
           <span
-            class="block text-lg font-semibold text-color group-hover:text-primary transition-colors mb-0.5">{{ example.title }}</span>
-          <span class="block text-sm text-color-secondary leading-tight">{{ example.description }}</span>
+            class="block text-lg font-semibold text-color group-hover:text-primary transition-colors mb-0.5"
+            >{{ example.title }}</span
+          >
+          <span class="block text-sm text-color-secondary leading-tight">{{
+            example.description
+          }}</span>
         </div>
         <div class="flex gap-3 w-full">
           @for (tag of example.tags; track tag) {

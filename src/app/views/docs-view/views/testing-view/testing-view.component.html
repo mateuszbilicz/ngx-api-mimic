@@ -1,0 +1,30 @@
+<app-doc-page name="Testing">
+  <p class="text-justify mb-4">
+    The standard approach for testing your application when using the
+    <code>ngx-api-mimic</code> library. It integrates seamlessly with testing runners like Jest,
+    Vitest, or Karma inside Angular 16+ environments.
+  </p>
+
+  <h3>Mock Data Isolation</h3>
+  <p class="mb-4">
+    When writing unit tests for services connected directly to <code>NgxApiMimicMockData</code> or
+    using the <code>@UsingSchema</code> decorator, ensure you disable
+    <code>localStorage</code> persistence to prevent state leaks across different test cases. You
+    can do this by setting the <code>preventStore</code> flag to `true` (e.g. passing
+    <code>true</code> as the 3rd argument to <code>NgxApiMimicMockData</code>).
+  </p>
+  <app-code-viewer filename="data-mock.spec.ts" [code]="dataMockCode()" height="15rem" />
+
+  <h3>API Mock with Angular HttpClient</h3>
+  <p class="mb-4">
+    Testing services that invoke HTTP calls normally requires <code>HttpTestingController</code>.
+    However, when testing components or services against your fake endpoints, you can completely
+    sidestep
+    <code>HttpTestingController</code>
+    and just inject the factory <code>ngxApiMockInterceptorFactory</code> right into your
+    <code>TestBed</code>. By doing so, your Angular <code>HttpClient</code> calls will pass through
+    the mock infrastructure transparently and quickly. Be sure to configure delays to
+    <code>0</code> for synchronous-like test speeds!
+  </p>
+  <app-code-viewer filename="api-mock.spec.ts" [code]="apiMockCode()" height="28rem" />
+</app-doc-page>

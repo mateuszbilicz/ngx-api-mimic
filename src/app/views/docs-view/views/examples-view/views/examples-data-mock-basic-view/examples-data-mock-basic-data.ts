@@ -48,4 +48,3 @@ export class DataMockBasicExampleService extends NgxApiMimicMockData<DataMockBas
     this.data = this.data.filter(i => i.id !== id);
   }
 }`;
-

@@ -1,23 +1,24 @@
 <app-doc-page name="Data Mock Advanced Example">
-    <p>
-        This advanced example demonstrates multiple mocked data stores. The Products store uses existing mock Category
-        IDs inside a dynamic <code>enum</code> validation. We also use <code>custom</code> parsing and internal
-        generator methods, like <code>this._$generateRandomString</code>.
-    </p>
-    <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
+  <p>
+    This advanced example demonstrates multiple mocked data stores. The Products store uses existing
+    mock Category IDs inside a dynamic <code>enum</code> validation. We also use
+    <code>custom</code> parsing and internal generator methods, like
+    <code>this._$generateRandomString</code>.
+  </p>
+  <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
 </app-doc-page>
 
 <ng-template #codeTemplate>
-    <h3>Advanced Mock Setup</h3>
-    <app-code-viewer filename="data-mock-advanced-example.ts" [code]="classCode" height="40rem" />
+  <h3>Advanced Mock Setup</h3>
+  <app-code-viewer filename="data-mock-advanced-example.ts" [code]="classCode" height="40rem" />
 </ng-template>
 
 <ng-template #previewTemplate>
-    <app-console-preview />
-    <p-panel header="Categories mock">
-        <pre class="overflow-auto text-xs">{{ categories() | json }}</pre>
-    </p-panel>
-    <p-panel header="Products mock" class="mt-4">
-        <pre class="overflow-auto text-xs max-h-[30rem]">{{ products() | json }}</pre>
-    </p-panel>
+  <app-console-preview />
+  <p-panel header="Categories mock">
+    <pre class="overflow-auto text-xs">{{ categories() | json }}</pre>
+  </p-panel>
+  <p-panel header="Products mock" class="mt-4">
+    <pre class="overflow-auto text-xs max-h-[30rem]">{{ products() | json }}</pre>
+  </p-panel>
 </ng-template>

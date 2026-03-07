@@ -27,4 +27,3 @@ import { ApiMockBasicController } from './api-mock-basic-example';
 const router = ngxApiMimicRouterFactory([ApiMockBasicController]);
 router.usePrefix('api-mock-basic-example');
 export const apiMockBasicExampleInterceptor = ngxApiMockInterceptorFactory(router);`;
-

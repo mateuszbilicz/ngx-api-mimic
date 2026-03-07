@@ -92,4 +92,3 @@ export class DataMockAdvancedProductService extends NgxApiMimicMockData<DataMock
     this.data = this.data.filter(p => p.id !== id);
   }
 }`;
-

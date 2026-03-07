@@ -50,4 +50,12 @@ export const docsViewRoutes: NamedRoutes = [
     loadChildren: () =>
       import('./views/examples-view/examples-view.routes').then((r) => r.examplesViewRoutes),
   },
+  {
+    path: 'testing',
+    data: {
+      name: 'Testing',
+    },
+    loadComponent: () =>
+      import('./views/testing-view/testing-view.component').then((v) => v.TestingViewComponent),
+  },
 ];

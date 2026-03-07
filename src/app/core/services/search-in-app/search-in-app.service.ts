@@ -76,8 +76,14 @@ export class SearchInAppService {
       import('../../../views/docs-view/views/examples-view/views/examples-mixed-advanced-view/examples-mixed-advanced-data'),
     ]);
 
-    return from(Promise.all([apiTreeImports, dataTreeImports, examplesImports])).pipe(
-      map(([apiTrees, dataTrees, examplesData]) => {
+    const testingImports = Promise.all([
+      import('../../../views/docs-view/views/testing-view/testing-view-data'),
+    ]);
+
+    return from(
+      Promise.all([apiTreeImports, dataTreeImports, examplesImports, testingImports]),
+    ).pipe(
+      map(([apiTrees, dataTrees, examplesData, testingData]) => {
         const results: AppSearchResult[] = [];
 
         for (const tree of apiTrees) {
@@ -117,6 +123,22 @@ export class SearchInAppService {
                 routerLink: exampleLinks[index],
               });
               break; // Ensure we only push one code match per example to avoid cluster
+            }
+          }
+        });
+
+        testingData.forEach((mod: any) => {
+          const codes = Object.values(mod) as string[];
+          for (const code of codes) {
+            if (typeof code === 'string' && code.toLowerCase().includes(q)) {
+              results.push({
+                title: 'Testing',
+                icon: 'pi pi-check-circle',
+                matchedIn: 'Testing Document',
+                snippet: this.getSnippet(code, q),
+                routerLink: ['/', 'docs', 'testing'],
+              });
+              break;
             }
           }
         });

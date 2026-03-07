@@ -137,4 +137,3 @@ import { UsersController } from './mixed-basic-example';
 const router = ngxApiMimicRouterFactory([UsersController]);
 router.usePrefix('mixed-basic-example');
 export const mixedBasicExampleInterceptor = ngxApiMockInterceptorFactory(router);`;
-

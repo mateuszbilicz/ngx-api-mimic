@@ -1,19 +1,19 @@
 <app-doc-page name="Data Mock Basic Example">
-    <p>
-        This simplest example demonstrates how to set up a basic data mock class inheriting from
-        <code>NgxApiMimicMockData</code>.
-    </p>
-    <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
+  <p>
+    This simplest example demonstrates how to set up a basic data mock class inheriting from
+    <code>NgxApiMimicMockData</code>.
+  </p>
+  <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
 </app-doc-page>
 
 <ng-template #codeTemplate>
-    <h3>Service class</h3>
-    <app-code-viewer filename="data-mock-basic-example.ts" [code]="classCode" height="40rem" />
+  <h3>Service class</h3>
+  <app-code-viewer filename="data-mock-basic-example.ts" [code]="classCode" height="40rem" />
 </ng-template>
 
 <ng-template #previewTemplate>
-    <app-console-preview />
-    <p-panel header="Raw items dump">
-        <pre class="overflow-auto text-xs">{{ list() | json }}</pre>
-    </p-panel>
+  <app-console-preview />
+  <p-panel header="Raw items dump">
+    <pre class="overflow-auto text-xs">{{ list() | json }}</pre>
+  </p-panel>
 </ng-template>

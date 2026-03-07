@@ -1,41 +1,35 @@
 <app-doc-page name="Mixed Basic Example">
-  <p>
-    This example contains controller class that mocks data.
-  </p>
+  <p>This example contains controller class that mocks data.</p>
   <app-doc-tabs [codeTemplate]="codeTemplate" [previewTemplate]="previewTemplate" />
 </app-doc-page>
 
 <ng-template #codeTemplate>
-  <h3>
-    Interfaces used in this example
-  </h3>
+  <h3>Interfaces used in this example</h3>
   <p>
-    It is a best practice to organize endpoint payload definitions using strict TypeScript interfaces.
-    Here, a baseline schema models our entities logically.
+    It is a best practice to organize endpoint payload definitions using strict TypeScript
+    interfaces. Here, a baseline schema models our entities logically.
   </p>
   <app-code-viewer filename="mixed-basic-example.ts" [code]="interfacesCode" height="20rem" />
-  <h3>
-    Class code
-  </h3>
+  <h3>Class code</h3>
   <p>
-    The foundation of our mocked endpoint lies within the class decorated with <code>{{ '@Controller' }}</code>.
-    By applying the <code>{{ '@UsingSchema' }}</code> decorator, we automatically generate a fully populated structure
-    based on
-    the provided data shapes (filling 100 entries automatically using our built-in generators).
-    Inside this class, HTTP handling strategies are elegantly mapped via annotations like <code>{{ '@Get' }}</code>,
-    <code>{{ '@Post' }}</code>,
-    <code>{{ '@Put' }}</code>, and <code>{{ '@Delete' }}</code>, constructing comprehensive CRUD capabilities
-    seamlessly.
+    The foundation of our mocked endpoint lies within the class decorated with
+    <code>{{ '@Controller' }}</code
+    >. By applying the <code>{{ '@UsingSchema' }}</code> decorator, we automatically generate a
+    fully populated structure based on the provided data shapes (filling 100 entries automatically
+    using our built-in generators). Inside this class, HTTP handling strategies are elegantly mapped
+    via annotations like <code>{{ '@Get' }}</code
+    >, <code>{{ '@Post' }}</code
+    >, <code>{{ '@Put' }}</code
+    >, and <code>{{ '@Delete' }}</code
+    >, constructing comprehensive CRUD capabilities seamlessly.
   </p>
   <app-code-viewer filename="mixed-basic-example.ts" [code]="classCode" height="40rem" />
-  <h3>
-    Router and interceptor
-  </h3>
+  <h3>Router and interceptor</h3>
   <p>
-    To tie these simulated routes directly into our <code>HttpClient</code> infrastructure, we instantiate a mock router
-    namespace
-    via <code>ngxApiMimicRouterFactory</code>. The <code>usePrefix</code> function separates context blocks allowing
-    multiple API mocks to co-exist without overriding each other.
+    To tie these simulated routes directly into our <code>HttpClient</code> infrastructure, we
+    instantiate a mock router namespace via <code>ngxApiMimicRouterFactory</code>. The
+    <code>usePrefix</code> function separates context blocks allowing multiple API mocks to co-exist
+    without overriding each other.
   </p>
   <app-code-viewer filename="mixed-basic-example.ts" [code]="routerCode" height="15rem" />
 </ng-template>
@@ -44,21 +38,24 @@
   <app-console-preview />
   <p-panel header="UI">
     <input pInputText type="text" placeholder="Search" [(ngModel)]="filterText" />
-    <p-table [value]="usersList()" [loading]="usersLoading()" [paginator]="true" [rows]="10"
-      [totalRecords]="usersCount()" [lazy]="true" [rowsPerPageOptions]="undefined" [showCurrentPageReport]="true"
-      (onPage)="this.setSkip($event.first)" (onEditComplete)="updateUser($event.index, $event.field, $event.data)"
-      dataKey="id">
+    <p-table
+      [value]="usersList()"
+      [loading]="usersLoading()"
+      [paginator]="true"
+      [rows]="10"
+      [totalRecords]="usersCount()"
+      [lazy]="true"
+      [rowsPerPageOptions]="undefined"
+      [showCurrentPageReport]="true"
+      (onPage)="this.setSkip($event.first)"
+      (onEditComplete)="updateUser($event.index, $event.field, $event.data)"
+      dataKey="id"
+    >
       <ng-template #header>
         <tr>
-          <th>
-            First name
-          </th>
-          <th>
-            Last name
-          </th>
-          <th>
-            Email
-          </th>
+          <th>First name</th>
+          <th>Last name</th>
+          <th>Email</th>
           <th colspan="3"></th>
         </tr>
         <tr>
@@ -69,36 +66,50 @@
         <tr>
           <td class="min-w-[10rem]">
             <label for="firstName">First name</label>
-            <input id="firstName" pInputText type="text" [formField]="newUserForm.firstName" fluid>
+            <input
+              id="firstName"
+              pInputText
+              type="text"
+              [formField]="newUserForm.firstName"
+              fluid
+            />
           </td>
           <td class="min-w-[10rem]">
             <label for="lastName">Last name</label>
-            <input id="lastName" pInputText type="text" [formField]="newUserForm.lastName" fluid>
+            <input id="lastName" pInputText type="text" [formField]="newUserForm.lastName" fluid />
           </td>
           <td class="min-w-[10rem]">
             <label for="email">Email</label>
-            <input id="email" pInputText type="text" [formField]="newUserForm.email" fluid>
+            <input id="email" pInputText type="text" [formField]="newUserForm.email" fluid />
           </td>
           <td class="min-w-12">
             <label for="age">Age</label>
-            <input id="age" pInputText type="number" [formField]="newUserForm.age" fluid>
+            <input id="age" pInputText type="number" [formField]="newUserForm.age" fluid />
           </td>
           <td class="min-w-[10rem]">
             <label for="password">Password</label>
-            <input id="password" pInputText type="text" [formField]="newUserForm.password" fluid>
+            <input id="password" pInputText type="text" [formField]="newUserForm.password" fluid />
           </td>
         </tr>
         <tr>
           <td colspan="6">
             <div class="flex justify-end">
-              <p-button label="Create" [disabled]="newUserForm().invalid()" (onClick)="createUser()" />
+              <p-button
+                label="Create"
+                [disabled]="newUserForm().invalid()"
+                (onClick)="createUser()"
+              />
             </div>
           </td>
         </tr>
       </ng-template>
       <ng-template #body let-item let-editing="editing">
         <tr>
-          <td [pEditableColumn]="item.firstName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="firstName">
+          <td
+            [pEditableColumn]="item.firstName"
+            [pEditableColumnRowIndex]="item.id"
+            pEditableColumnField="firstName"
+          >
             <p-cellEditor>
               <ng-template #input>
                 <input pInputText type="text" [(ngModel)]="item.firstName" fluid />
@@ -108,7 +119,11 @@
               </ng-template>
             </p-cellEditor>
           </td>
-          <td [pEditableColumn]="item.lastName" [pEditableColumnRowIndex]="item.id" pEditableColumnField="lastName">
+          <td
+            [pEditableColumn]="item.lastName"
+            [pEditableColumnRowIndex]="item.id"
+            pEditableColumnField="lastName"
+          >
             <p-cellEditor>
               <ng-template #input>
                 <input pInputText type="text" [(ngModel)]="item.lastName" fluid />
@@ -118,7 +133,11 @@
               </ng-template>
             </p-cellEditor>
           </td>
-          <td [pEditableColumn]="item.email" [pEditableColumnRowIndex]="item.id" pEditableColumnField="email">
+          <td
+            [pEditableColumn]="item.email"
+            [pEditableColumnRowIndex]="item.id"
+            pEditableColumnField="email"
+          >
             <p-cellEditor>
               <ng-template #input>
                 <input pInputText type="text" [(ngModel)]="item.email" fluid />
@@ -137,9 +156,9 @@
       </ng-template>
     </p-table>
     <div class="mt-4 text-xs text-surface-500">
-      <i class="pi pi-info-circle mr-1"></i> Edit inline by clicking on any of the data cells. Saving happens via
-      "ENTER" key logic within the editor. <strong>Delete</strong> is available directly without additional guard
-      handling.
+      <i class="pi pi-info-circle mr-1"></i> Edit inline by clicking on any of the data cells.
+      Saving happens via "ENTER" key logic within the editor. <strong>Delete</strong> is available
+      directly without additional guard handling.
     </div>
   </p-panel>
 </ng-template>

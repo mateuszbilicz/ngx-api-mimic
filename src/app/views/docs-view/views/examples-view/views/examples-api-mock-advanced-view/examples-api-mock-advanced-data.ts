@@ -108,4 +108,3 @@ import { ApiMockAdvancedController } from './api-mock-advanced-example';
 const router = ngxApiMimicRouterFactory([ApiMockAdvancedController]);
 router.usePrefix('api-mock-advanced-example');
 export const apiMockAdvancedExampleInterceptor = ngxApiMockInterceptorFactory(router);`;
-
