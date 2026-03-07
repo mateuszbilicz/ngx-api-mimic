@@ -52,7 +52,7 @@ Just start using it!
 - [X] Add support for fake guards
 - [X] Add support for pipes
 - [X] Add router prefix for multiple routers running at the same time
-- [ ] Write tests
+- [X] Write tests
 - [X] Write app with example usages
 
 ## License
