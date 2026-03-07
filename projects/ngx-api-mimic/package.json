@@ -1,7 +1,16 @@
 {
   "name": "ngx-api-mimic",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Angular API Mock library for demo apps.",
+  "keywords": [
+    "Angular",
+    "API Mock",
+    "Mock Service",
+    "Data Mock",
+    "Angular Mocks",
+    "Mock interceptor",
+    "Mock API Controllers"
+  ],
   "license": "ISC",
   "author": {
     "name": "Mateusz Bilicz",
@@ -9,7 +18,7 @@
   },
   "private": false,
   "repository": "https://github.com/mateuszbilicz/ngx-api-mimic",
-  "homepage": "https://github.com/mateuszbilicz/ngx-api-mimic",
+  "homepage": "https://ngx-api-mimic.mateuszbilicz.pl/",
   "peerDependencies": {
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0"
