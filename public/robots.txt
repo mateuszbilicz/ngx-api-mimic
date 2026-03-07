@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ngx-api-mock.mateuszbilicz.pl/sitemap.xml
+Sitemap: https://ngx-api-mimic.mateuszbilicz.pl/sitemap.xml

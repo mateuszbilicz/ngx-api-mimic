@@ -1,11 +1,11 @@
-# NGX API Mimic (NgxApiMock)
+# NGX API Mimic (NgxApiMimic)
 
 > A powerful library to create backend-like API mocks under the HTTP Interceptor inside Angular applications.
 
 - **Version**: 0.0.7
 - **Author**: Mateusz Bilicz (https://mateuszbilicz.pl)
 - **Repository**: https://github.com/mateuszbilicz/ngx-api-mimic
-- **Website/Docs**: https://ngx-api-mock.mateuszbilicz.pl
+- **Website/Docs**: https://ngx-api-mimic.mateuszbilicz.pl
 - **NPM Package**: ngx-api-mimic
 
 ## Description

@@ -39,7 +39,7 @@ Just start using it!
 
 ## Documentation
 
-[Online DOCS](ngx-api-mock.mateuszbilicz.pl)
+[Online DOCS](ngx-api-mimic.mateuszbilicz.pl)
 
 ## TODO
 
