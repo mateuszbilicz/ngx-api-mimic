@@ -39,7 +39,7 @@ Just start using it!
 
 ## Documentation
 
-[Online DOCS](ngx-api-mimic.mateuszbilicz.pl)
+[Online DOCS](https://ngx-api-mimic.mateuszbilicz.pl)
 
 ## TODO
 
