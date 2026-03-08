@@ -1,4 +1,20 @@
 User-agent: *
 Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: GPTBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: OmagapiBot
+Allow: /
+User-agent: Anthropic-ai
+Allow: /
 
 Sitemap: https://ngx-api-mimic.mateuszbilicz.pl/sitemap.xml
+Sitemap: https://ngx-api-mimic.mateuszbilicz.pl/llms.txt
+
