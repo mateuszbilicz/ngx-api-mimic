@@ -1,0 +1,179 @@
+# ngx-api-mimic - Full AI/LLM Documentation
+
+`ngx-api-mimic` is a powerful Angular library designed to fake a full REST API and mock data in the browser using Angular's HttpInterceptor. Its architecture, specifically the use of Decorators (`@Controller`, `@Get`, `@Post`, etc.), Guards, Pipes, and Exceptions heavily mimics NestJS.
+
+This document serves as a comprehensive guide and API reference for AI agents/LLMs. 
+
+## 1. Setup & Integration
+
+To integrate the library, create an interceptor and provide it in your Angular app configuration.
+
+### HTTP Interceptor Factory: `ngxApiMockInterceptorFactory`
+```typescript
+import { ngxApiMockInterceptorFactory, ngxApiMimicRouterFactory } from 'ngx-api-mimic';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { UsersController } from './users.controller';
+
+// 1. Create a router with your controllers
+const router = ngxApiMimicRouterFactory([UsersController]);
+router.usePrefix('api/v1'); // Optional API prefix e.g., localhost:4200/api/v1/users
+
+// 2. Provide the interceptor inside app.config.ts (Angular 15+)
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(
+        withInterceptors([
+            ngxApiMockInterceptorFactory(router, { 
+                minDelay: 200, 
+                maxDelay: 500, 
+                enableLog: true 
+            })
+        ])
+    )
+  ]
+};
+```
+Options configuration: `NgxApiMimicInterceptorOptions`: `minDelay` (ms), `maxDelay` (ms), `enableLog` (bool, default true).
+
+## 2. API Routing & Decorators
+
+The library offers identical decorators to NestJS.
+
+### Class Decorators
+- `@Controller(basePath: string)`: Defines a base route path for the controller.
+- `@UsingSchema<T>(storeName: string | undefined, schema: MockSchemaOf<T>)`: Injects a mocked data store directly into the controller class. Read/write to `this.data`. If `storeName` is undefined, data is generated per session (not stored in `localStorage`). If provided, data persists in browser's `localStorage` as `mock-{storeName}`.
+
+### Method Endpoints
+- `@Get(path: string)`
+- `@Post(path: string)`
+- `@Put(path: string)`
+- `@Delete(path: string)`
+Supports parameters like `:id`, e.g., `@Get(':id')`.
+
+### Parameter Injectors
+Used to get HTTP Request data directly into the function arguments.
+- `@UrlParam(name: string, ...pipes: PipeTransform[])`: Extracts e.g. from `/users/:id` using `@UrlParam('id')`.
+- `@Query(name: string, ...pipes: PipeTransform[])`: Extracts query strings. E.g. `?search=xyz` -> `@Query('search')`.
+- `@Body(...pipes: PipeTransform[])`: Extracts the POST/PUT body object payload.
+- `@Headers(name: string, ...pipes: PipeTransform[])`: Extracts specific HTTP headers.
+
+## 3. Data Mocking and Schemas
+
+Data Mocking allows you to generate robust JSON trees. Schemas type definitions give IDE auto-completion for specific values.
+
+### Schema Type Inference & Properties (`NgxApiMimicMockDataType`)
+When defining a mock schema, you use `MockSchemaOf<T>`. Typical types are:
+- `'number'`: Options -> `min`, `max`, `round`, `precision`.
+- `'string'`: Options -> `minLength`, `maxLength`, `customCharset`.
+- `'boolean'`
+- `'date'`: Options -> `dateStart`, `dateEnd`.
+- `'firstName'`, `'lastName'`, `'fullName'`
+- `'email'`, `'nameEmail'` (e.g. `firstName`/`lastName` inputs to generate email)
+- `'password'`: Options -> Lengths and custom charsets.
+- `'enum'`: Pick randomly from an array via `enum: []`.
+- `'array'`: To generate arrays, map via `item: (schema)` and `itemCount: number`. Alternatively, `staticValue: U[]`.
+- `'object'`: Define child trees inside `items: { [K in keyof T]: MockSchemaOf<T[K]> }`.
+- `'custom'`: Provide `customFn(instructions)` to build dependent property data.
+- `'static'`: Provide a hardcoded `value`.
+
+Schema example config:
+```typescript
+import { MockSchemaOf } from 'ngx-api-mimic';
+
+export interface User { id: number; name: string; isActive: boolean; }
+
+export const userArraySchema: MockSchemaOf<User[]> = {
+  type: 'array',
+  itemCount: 10,
+  item: {
+    type: 'object',
+    items: {
+      id: { type: 'custom', customFn: () => Math.round(Math.random() * 1000) }, // custom logic
+      name: { type: 'fullName' }, // internal generator
+      isActive: { type: 'boolean' } 
+    }
+  }
+};
+```
+
+## 4. Pipes
+
+Pipes are used for data transformation and validation before your method is called.
+Available predefined pipes:
+- `ParseIntPipe`: String to Int logic. Throws 400 if invalid.
+- `ParseFloatPipe`
+- `ParseBoolPipe`: Maps 'true', '1' to boolean truthy values.
+- `ParseDatePipe`
+- `ParseUUIDPipe`: Checks UUID regex format.
+- `ParseEnumPipe(entity: object)`
+- `ParseArrayPipe`: Converts comma-separated strings to Array.
+- `ParseFilePipe`: Expects `Blob` or `File`.
+- `DefaultValuePipe(defaultValue: any)`: Assigns fallback value if null/undefined.
+
+Example usage:
+```typescript
+@Get(':id')
+getUser(@UrlParam('id', ParseIntPipe) userId: number) { ... }
+
+@Get('')
+search(@Query('q', new DefaultValuePipe('')) query: string) { ... }
+```
+
+## 5. Middleware: Guards & Exceptions
+
+### Guards (`@UseGuards`)
+Implement `CanActivate(context: NgxApiMimicExecutionContext)`. Prevents unauthorized access. Throws 403.
+Context exposes: `getClass()`, `getHandler()`, `getArgs()`, `getRequest()`. Request has `params`, `query`, `body`, `headers`, `url`.
+
+```typescript
+export class AuthGuard implements CanActivate {
+  canActivate(context: NgxApiMimicExecutionContext) {
+    const headers = context.getRequest().headers;
+    return !!headers.get('Authorization'); // Return boolean | Promise<boolean> | Observable<boolean>
+  }
+}
+// Usage: @UseGuards(AuthGuard) above Class or Method
+```
+
+### Exceptions
+Throw a `NgxApiMimicException` to instantly return an error HTTP Response.
+```typescript
+throw new NgxApiMimicException(404, 'User not found', { extraPayload: true });
+```
+
+## 6. Complete Example (Controller)
+
+```typescript
+import { 
+    Controller, Get, Post, Put, Delete, Body, UrlParam, UsingSchema, NgxApiMimicException, ParseIntPipe 
+} from 'ngx-api-mimic';
+import { User, userArraySchema } from './user.schema';
+
+@UsingSchema('users_db', userArraySchema) // Loads mock data to `this.data`, stores in localStorage 'mock-users_db'
+@Controller('users') // Base URL '/users'
+export class UsersController {
+  public data!: User[]; // Injected by @UsingSchema
+
+  @Get('')
+  getAllUsers() {
+    return this.data; // Responds with 200 OK & JSON array
+  }
+
+  @Get(':id')
+  getUser(@UrlParam('id', ParseIntPipe) id: number) {
+    const user = this.data.find(u => u.id === id);
+    if (!user) throw new NgxApiMimicException(404, 'User not found');
+    return user;
+  }
+
+  @Post('')
+  createUser(@Body() payload: Partial<User>) {
+    const newUser = { id: Math.random(), ...payload } as User;
+    this.data.push(newUser); // Automatically syncing to LocalStorage
+    this.data = [...this.data]; // Triggers assignment for store updates if needed
+    return newUser;
+  }
+}
+```
+
+By following this markdown documentation, you can easily read schemas, provide validation, apply HTTP mocks, or migrate fake endpoints. Everything works offline directly inside the Angular bundle. Do not use for real server projects.

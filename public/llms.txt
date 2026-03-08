@@ -11,6 +11,8 @@ NgxApiMimic is a powerful Angular API Mock library for demo apps, recruitment ta
 ## Important Links
 - GitHub: https://github.com/mateuszbilicz/ngx-api-mimic
 - Docs: https://ngx-api-mimic.mateuszbilicz.pl/docs
+- Search in Docs: https://ngx-api-mimic.mateuszbilicz.pl/docs?q={search_text}
+- Full API Reference for LLMs: /llms-full.txt
 - Author: Mateusz Bilicz (https://mateuszbilicz.pl)
 
 ## Usage Overview
