@@ -1,6 +1,6 @@
 {
   "name": "ngx-api-mimic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Angular API Mock library for demo apps.",
   "keywords": [
     "Angular",

@@ -34,27 +34,6 @@ Just start using it!
 
 [Online DOCS](https://ngx-api-mimic.mateuszbilicz.pl)
 
-## TODO
-
-- [X] Create library
-- [X] Import api-mock interceptor and controller logic
-- [X] Import data mock
-- [X] Check api-mock for any possible upgrades
-- [X] Check data mock for any possible upgrades
-- [X] Improve typing in data mocks
-- [X] Add descriptions to data mock types
-- [X] Improve typing in router
-- [X] Create api mimic router factory
-- [X] Create @UsingSchema(storeName?, schematic) decorator for Controller classes
-- [X] Fixes in api mock existing features
-- [X] Add function decorators to api mock
-- [X] Add support for response type in api mock - error, success, etc - includes modifications in interceptor
-- [X] Add support for fake guards
-- [X] Add support for pipes
-- [X] Add router prefix for multiple routers running at the same time
-- [X] Write tests
-- [X] Write app with example usages
-
 ## License
 
 **ISC**
